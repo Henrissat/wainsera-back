@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
 import { ObjectType, Field } from "type-graphql";
-import { Cuvee } from "./Cuvee"; 
-import { Vin } from "./Vin";
-import { Casier } from "./Casier"; 
+// import { Cuvee } from "./Cuvee"; 
+// import { Vin } from "./Vin";
+// import { Casier } from "./Casier"; 
 
 @ObjectType()
 @Entity()
