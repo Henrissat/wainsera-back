@@ -1,11 +1,21 @@
 import { DataSource } from "typeorm";
-import Book from "../entities/book.entity";
 
+import * as path from "path";
+import { Bouteille } from "../entities/bouteille.entity";
+import { Cuvee } from "../entities/cuvee.entity";
+import { Vin } from "../entities/vin.entity";
+import { Appellation } from "../entities/appellation.entity";
+import { Avis } from "../entities/avis.entity";
+import { TypeVin } from "../entities/typeVin.entity";
+import { Casier } from "../entities/casier.entity";
+import { Region } from "../entities/region.entity";
+import { Pays } from "../entities/pays.entity";
+import { Cepage } from "../entities/cepage.entity";
 
 export default new DataSource({
   type: "sqlite",
-  database: "./demo.sqlite",
+  database: path.resolve(__dirname,"./wainsera.sqlite"),
   synchronize: true,
-  entities: [Book],
+  entities: [Bouteille, Cuvee, Vin, Appellation, Avis, TypeVin, Casier, Region, Pays, Cepage,],
   logging: ["query", "error"],
 });

@@ -16,7 +16,7 @@ async function main() {
   });
 
   const { url } = await startStandaloneServer(server, {
-    listen: { port: 4000 },
+    listen: { port: 8000 },
   });
 
   await datasource.initialize();
