@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToOne, JoinColumn, OneToMany } from "typeorm";
 import { ObjectType, Field } from "type-graphql";
 import { Cuvee } from "./cuvee.entity"; 
 import { Vin } from "./vin.entity";
@@ -14,7 +14,7 @@ export class Bouteille {
 
   @Field({ nullable: true })
   @Column({ type: "int", nullable: true })
-  millésime: number;
+  millesime: number;
 
   @Field({ nullable: true })
   @Column({ type: "float", nullable: true })
@@ -28,18 +28,17 @@ export class Bouteille {
   @ManyToOne(() => Cuvee, { nullable: true })
   cuvee: Cuvee;
 
-  @Field(() => Vin)
+  @Field(() => Vin, { nullable: true })
   @OneToOne(() => Vin, { eager: true, nullable: true })
-  @JoinColumn({ name: "vin_id" })
+  @JoinColumn({ name: "vinId" })
   vin: Vin;
 
   @Field(() => Casier, { nullable: true })
   @OneToOne(() => Casier, { eager: true, nullable: true })
-  @JoinColumn({ name: "casier_id" })
+  @JoinColumn({ name: "casierId" })
   casier: Casier;
 
-  @Field(() => Avis, { nullable: true })
-  @OneToOne(() => Avis, { eager: true, nullable: true })
-  @JoinColumn({ name: "avis_id" })
-  avis: Avis;
+  @Field(() => [Avis], { nullable: true })
+  @OneToMany(() => Avis, avis => avis.bouteille)
+  avis: Avis[];
 }

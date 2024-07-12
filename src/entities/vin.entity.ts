@@ -17,21 +17,17 @@ export class Vin {
   @Column({ type: "text" })
   couleur: string;
 
-  @Field(() => Cuvee, { nullable: true })
-  @ManyToOne(() => Cuvee, { nullable: true })
-  cuvee: Cuvee;
-
   @Field(() => [Bouteille], { nullable: true })
   @OneToMany(() => Bouteille, bouteille => bouteille.vin)
   bouteilles: Bouteille[];
 
   @Field(() => [Cepage], { nullable: true })
   @ManyToMany(() => Cepage, cepage => cepage.vins)
-  @JoinTable()
+  @JoinTable({ name: "cepageId" })
   cepages: Cepage[];
 
   @Field(() => [Appellation], { nullable: true })
   @ManyToMany(() => Appellation, appellation => appellation.vins)
-  @JoinTable()
+  @JoinTable({ name: "appellationId" })
   appellations: Appellation[];
 }

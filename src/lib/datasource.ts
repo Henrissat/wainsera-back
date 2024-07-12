@@ -1,6 +1,5 @@
 import { DataSource } from "typeorm";
 
-import * as path from "path";
 import { Bouteille } from "../entities/bouteille.entity";
 import { Cuvee } from "../entities/cuvee.entity";
 import { Vin } from "../entities/vin.entity";
@@ -14,7 +13,7 @@ import { Cepage } from "../entities/cepage.entity";
 
 export default new DataSource({
   type: "sqlite",
-  database: path.resolve(__dirname,"./wainsera.sqlite"),
+  database: "./wainsera.sqlite",
   synchronize: true,
   entities: [Bouteille, Cuvee, Vin, Appellation, Avis, TypeVin, Casier, Region, Pays, Cepage,],
   logging: ["query", "error"],

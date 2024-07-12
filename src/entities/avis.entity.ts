@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToOne, ManyToOne } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 import { Bouteille } from "./bouteille.entity";
 import { TypeVin } from "./typeVin.entity";
@@ -25,4 +25,7 @@ export class Avis {
   @Field(() => TypeVin, { nullable: true })
   @OneToOne(() => TypeVin, { nullable: true, eager: true })
   type_vin: TypeVin;
+
+  @ManyToOne(() => Bouteille, bouteille => bouteille.avis)
+  bouteille: Bouteille;
 }
