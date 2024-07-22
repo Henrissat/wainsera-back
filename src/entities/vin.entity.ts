@@ -21,11 +21,6 @@ export class Vin {
   @OneToMany(() => Bouteille, bouteille => bouteille.vin)
   bouteilles: Bouteille[];
 
-  @Field(() => [Cepage], { nullable: true })
-  @ManyToMany(() => Cepage, cepage => cepage.vins)
-  @JoinTable({ name: "cepageId" })
-  cepages: Cepage[];
-
   @Field(() => [Appellation], { nullable: true })
   @ManyToMany(() => Appellation, appellation => appellation.vins)
   @JoinTable({ name: "appellationId" })

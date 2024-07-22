@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, OneToMany } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
-import { Vin } from "./vin.entity";
+import { Bouteille } from "./bouteille.entity";
+import { BouteilleCepage } from "./bouteilleCepage.entity";
 
 @ObjectType()
 @Entity()
@@ -13,8 +14,10 @@ export class Cepage {
   @Column({ type: "text", nullable: true })
   nom_cepage: string;
 
-  @Field(() => [Vin], { nullable: true })
-  @ManyToMany(() => Vin, vin => vin.cepages)
-  @JoinTable()
-  vins: Vin[];
+  @Field(() => [Bouteille], { nullable: true })
+  @ManyToMany(() => Bouteille, bouteille => bouteille.cepages)
+  bouteilles: Bouteille[];
+
+  @OneToMany(() => BouteilleCepage, bouteilleCepage => bouteilleCepage.cepage)
+  bouteilleCepages: BouteilleCepage[];
 }
