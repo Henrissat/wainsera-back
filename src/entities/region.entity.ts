@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, JoinColum
 import { ObjectType, Field, ID } from "type-graphql";
 import { Appellation } from "./appellation.entity";
 import { Pays } from "./pays.entity";
+import { Bouteille } from "./bouteille.entity";
 
 @ObjectType()
 @Entity()
@@ -15,9 +16,13 @@ export class Region {
   nom_region: string;
 
   @Field(() => Pays, { nullable: true })
-  @ManyToOne(() => Pays, { nullable: true })
-  @JoinColumn()
+  @ManyToOne(() => Pays, pays => pays.regions, { nullable: true })
+  @JoinColumn({ name: "paysId" })
   pays: Pays;
+
+  @Field(() => [Bouteille], { nullable: true })
+  @OneToMany(() => Bouteille, bouteille => bouteille.region)
+  bouteilles: Bouteille[];
 
   @Field(() => [Appellation], { nullable: true })
   @OneToMany(() => Appellation, appellation => appellation.region)

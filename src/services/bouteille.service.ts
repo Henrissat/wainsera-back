@@ -12,7 +12,10 @@ export default class BouteilleService {
 
   async listBouteilles(): Promise<Bouteille[]> {
     try {
-      const bouteilles = await this.db.find();
+      const bouteilles = await this.db.find({
+        relations: ["cuvee", "vin", "cepages", "region", "region.pays", "casier"],
+      });
+      console.log(bouteilles); 
       return bouteilles;
     } catch (error) {
       console.error("Error listing bouteilles:", error);
@@ -29,40 +32,40 @@ export default class BouteilleService {
     }
   }
 
-  async addBouteille({ millesime, alcool, quantite }: IAddBouteille): Promise<Bouteille> {
-    try {
-      const newBouteille = this.db.create({ millesime, alcool, quantite });
-      return await this.db.save(newBouteille);
-    } catch (error) {
-      console.error("Error adding bouteille:", error);
-      throw new Error("Une erreur s'est produite lors de l'ajout de la bouteille.");
-    }
-  }
+  // async addBouteille({ millesime, alcool, quantite }: IAddBouteille): Promise<Bouteille> {
+  //   try {
+  //     const newBouteille = this.db.create({ millesime, alcool, quantite });
+  //     return await this.db.save(newBouteille);
+  //   } catch (error) {
+  //     console.error("Error adding bouteille:", error);
+  //     throw new Error("Une erreur s'est produite lors de l'ajout de la bouteille.");
+  //   }
+  // }
 
-  async updateBouteille(id: number, { millesime, alcool, quantite }: IUpdateBouteille): Promise<Bouteille> {
-    console.log('Updating bouteille with ID:', id);
-    try {
-      const existingBouteille = await this.db.findOne({ where: { id } });
-      if (!existingBouteille) {
-        throw new Error("Bouteille not found");
-      }
+  // async updateBouteille(id: number, { millesime, alcool, quantite }: IUpdateBouteille): Promise<Bouteille> {
+  //   console.log('Updating bouteille with ID:', id);
+  //   try {
+  //     const existingBouteille = await this.db.findOne({ where: { id } });
+  //     if (!existingBouteille) {
+  //       throw new Error("Bouteille not found");
+  //     }
 
-      if (millesime !== undefined) {
-        existingBouteille.millesime = millesime;
-      }
-      if (alcool !== undefined) {
-        existingBouteille.alcool = alcool;
-      }
-      if (quantite !== undefined) {
-        existingBouteille.quantite = quantite;
-      }
+  //     if (millesime !== undefined) {
+  //       existingBouteille.millesime = millesime;
+  //     }
+  //     if (alcool !== undefined) {
+  //       existingBouteille.alcool = alcool;
+  //     }
+  //     if (quantite !== undefined) {
+  //       existingBouteille.quantite = quantite;
+  //     }
 
-      return await this.db.save(existingBouteille);
-    } catch (error) {
-      console.error("Error updating bouteille:", error);
-      throw new Error("Une erreur s'est produite lors de la mise à jour de la bouteille.");
-    }
-  }
+  //     return await this.db.save(existingBouteille);
+  //   } catch (error) {
+  //     console.error("Error updating bouteille:", error);
+  //     throw new Error("Une erreur s'est produite lors de la mise à jour de la bouteille.");
+  //   }
+  // }
 
   async deleteBouteille(id: number): Promise<boolean> {
     console.log('Deleting bouteille with ID:', id);

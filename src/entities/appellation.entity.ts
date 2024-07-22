@@ -20,7 +20,7 @@ export class Appellation {
   vins: Vin[];
 
   @Field(() => Region, { nullable: true })
-  @ManyToOne(() => Region, { nullable: true })
+  @ManyToOne(() => Region, region => region.appellations, { nullable: true })
   @JoinColumn()
   region: Region;
 }
