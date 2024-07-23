@@ -4,7 +4,7 @@ import { Bouteille } from "../entities/bouteille.entity";
 import { Vin } from "../entities/vin.entity";
 import { Cuvee } from "../entities/cuvee.entity";
 import { Cepage } from "../entities/cepage.entity";
-import { IAddBouteille } from "../resolvers/bouteille.input";
+import { IAddBouteille, IUpdateBouteille } from "../resolvers/bouteille.input";
 import { Region } from "../entities/region.entity";
 
 export default class BouteilleService {
@@ -101,6 +101,67 @@ export default class BouteilleService {
     } catch (error) {
       console.error("Error adding bouteille:", error);
       throw new Error("Une erreur s'est produite lors de l'ajout de la bouteille.");
+    }
+  }
+
+  async updateBouteille(bouteilleInput: IUpdateBouteille): Promise<Bouteille> {
+    try {
+      const { id, millesime, alcool, quantite, vinId, cepageIds, cuveeNom, regionId } = bouteilleInput;
+
+      // Trouver la bouteille existante
+      const existingBouteille = await this.db.findOne({ where: { id } });
+      if (!existingBouteille) {
+        throw new Error("Bouteille non trouvée");
+      }
+
+      // Mettre à jour les champs si les nouvelles valeurs sont fournies
+      if (millesime !== undefined) existingBouteille.millesime = millesime;
+      if (alcool !== undefined) existingBouteille.alcool = alcool;
+      if (quantite !== undefined) existingBouteille.quantite = quantite;
+
+      if (vinId !== undefined) {
+        const vin = await this.vinRepository.findOne({ where: { id: vinId } });
+        if (!vin) {
+          throw new Error("Vin non trouvé");
+        }
+        existingBouteille.vin = vin;
+      }
+
+      if (regionId !== undefined) {
+        const region = await this.regionRepository.findOne({ where: { id: regionId } });
+        if (!region) {
+          throw new Error("Région non trouvée");
+        }
+        existingBouteille.region = region;
+
+        // Récupérer le paysId depuis la région
+        // existingBouteille.paysId = region.paysId;
+      }
+
+      if (cepageIds !== undefined) {
+        const cepages = await this.cepageRepository.findByIds(cepageIds);
+        if (cepages.length !== cepageIds.length) {
+          throw new Error("Un ou plusieurs cépages non trouvés");
+        }
+        existingBouteille.cepages = cepages;
+      }
+
+      if (cuveeNom !== undefined) {
+        let cuvee = existingBouteille.cuvee;
+        if (!cuvee) {
+          cuvee = this.cuveeRepository.create({ nom_domaine: cuveeNom });
+        } else {
+          cuvee.nom_domaine = cuveeNom;
+        }
+        await this.cuveeRepository.save(cuvee);
+        existingBouteille.cuvee = cuvee;
+      }
+
+      // Enregistrer les modifications
+      return await this.db.save(existingBouteille);
+    } catch (error) {
+      console.error("Error updating bouteille:", error);
+      throw new Error("Une erreur s'est produite lors de la mise à jour de la bouteille.");
     }
   }
   

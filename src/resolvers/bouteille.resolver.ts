@@ -2,7 +2,7 @@
 import { Resolver, Query, Mutation, Arg } from "type-graphql";
 import { Bouteille } from "../entities/bouteille.entity";
 import BouteilleService from "../services/bouteille.service";
-import { IAddBouteille } from "./bouteille.input";
+import { IAddBouteille, IUpdateBouteille } from "./bouteille.input";
 
 @Resolver(Bouteille)
 export default class BouteilleResolver {
@@ -41,6 +41,18 @@ export default class BouteilleResolver {
     } catch (error) {
       console.error("Error in addBouteille mutation:", error);
       throw new Error("Une erreur s'est produite lors de l'ajout de la bouteille.");
+    }
+  }
+
+  @Mutation(() => Bouteille)
+  async updateBouteille(
+    @Arg("bouteille") bouteilleInput: IUpdateBouteille
+  ) {
+    try {
+      return await this.bouteilleService.updateBouteille(bouteilleInput);
+    } catch (error) {
+      console.error("Error in updateBouteille mutation:", error);
+      throw new Error("Une erreur s'est produite lors de la modification de la bouteille.");
     }
   }
 
