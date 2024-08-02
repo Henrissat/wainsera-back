@@ -1,4 +1,4 @@
-import { Repository } from "typeorm";
+import { getRepository, Repository } from "typeorm";
 import datasource from "../lib/datasource";
 import { Bouteille } from "../entities/bouteille.entity";
 import { Vin } from "../entities/vin.entity";
@@ -37,12 +37,18 @@ export default class BouteilleService {
 
   async getBouteilleById(id: number): Promise<Bouteille | null> {
     try {
-      return await this.db.findOne({ where: { id } });
+      return await this.db.findOne({
+        where: { id },
+        relations: ["cepages", "bouteilleCepages"]
+      });
+      
     } catch (error) {
       console.error("Error getting bouteille by ID:", error);
       throw new Error("Une erreur s'est produite lors de la récupération de la bouteille.");
     }
   }
+
+  
 
   async deleteBouteille(id: number): Promise<boolean> {
     console.log('Deleting bouteille with ID:', id);

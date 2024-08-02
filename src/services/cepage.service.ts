@@ -12,9 +12,11 @@ export default class CepageService {
 
   async listCepages(): Promise<Cepage[]> {
     try {
-      const cepages = await this.db.find({
-        relations: ["vins"]
-      });
+      const cepages = await this.db.find(
+        // {
+        // relations: ["vins"]
+        // }  
+      );
       return cepages;
     } catch (error) {
       console.error("Error listing cépages:", error);
