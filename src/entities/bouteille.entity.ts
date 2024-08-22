@@ -27,6 +27,26 @@ export class Bouteille {
   @Column({ type: "int", nullable: true })
   quantite: number;
 
+  @Field({ nullable: true })
+  @Column({ type: "float", nullable: true })
+  note: number;
+
+  @Field({ nullable: true })
+  @Column({ type: "float", nullable: true })
+  note_perso: number;
+
+  @Field({ nullable: true })
+  @Column({ type: "text", nullable: true })
+  bouche: string;
+
+  @Field({ nullable: true })
+  @Column({ type: "text", nullable: true })
+  accord: string;
+
+  @Field({ nullable: true })
+  @Column({ type: "int", nullable: true })
+  garde_apogee: number;
+
   @Field(() => Cuvee, { nullable: true })
   @ManyToOne(() => Cuvee, cuvee => cuvee.bouteilles, { nullable: true, eager: true })
   @JoinColumn({ name: "cuveeId" })

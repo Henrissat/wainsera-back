@@ -1,15 +1,30 @@
-import { InputType, Field, Int } from "type-graphql";
+import { InputType, Field, Int, Float } from "type-graphql";
 
 @InputType()
 export class IAddBouteille {
   @Field(() => Int)
   millesime: number;
 
+  @Field(() => Int, { nullable: true })
+  garde_apogee?: number;
+
   @Field(() => Int)
   alcool: number;
 
   @Field(() => Int)
   quantite: number;
+
+  @Field(() => Float, { nullable: true })
+  note?: number;
+
+  @Field(() => Float, { nullable: true })
+  note_perso?: number;
+
+  @Field (() => String, { nullable: true })
+  bouche?: string;
+
+  @Field (() => String, { nullable: true })
+  accord?: string;
 
   @Field(() => Int)
   vinId: number;
@@ -22,6 +37,7 @@ export class IAddBouteille {
 
   @Field({ nullable: true })
   cuveeNom?: string;
+
 }
 
 @InputType()
@@ -33,10 +49,25 @@ export class IUpdateBouteille {
   millesime?: number;
 
   @Field(() => Int, { nullable: true })
+  garde_apogee?: number;
+
+  @Field(() => Int, { nullable: true })
   alcool?: number;
 
   @Field(() => Int, { nullable: true })
   quantite?: number;
+
+  @Field(() => Float, { nullable: true })
+  note: number;
+
+  @Field(() => Float, { nullable: true })
+  note_perso: number;
+
+  @Field (() => String, { nullable: true })
+  bouche: string;
+
+  @Field (() => String, { nullable: true })
+  accord: string;
 
   @Field(() => Int, { nullable: true })
   vinId?: number;
@@ -49,4 +80,5 @@ export class IUpdateBouteille {
 
   @Field({ nullable: true })
   cuveeNom?: string;
+
 }

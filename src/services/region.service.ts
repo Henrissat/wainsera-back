@@ -1,7 +1,7 @@
 import { Repository } from "typeorm";
 import datasource from "../lib/datasource";
 import { Region } from "../entities/region.entity";
-import { IAddRegion, IUpdateRegion } from "../resolvers/region";
+// import { IAddRegion, IUpdateRegion } from "../resolvers/region";
 
 export default class RegionService {
   private db: Repository<Region>;

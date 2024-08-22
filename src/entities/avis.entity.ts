@@ -10,18 +10,6 @@ export class Avis {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Field({ nullable: true })
-  @Column({ type: "float", nullable: true })
-  note: number;
-
-  @Field({ nullable: true })
-  @Column({ type: "float", nullable: true })
-  note_perso: number;
-
-  @Field({ nullable: true })
-  @Column({ type: "text", nullable: true })
-  bouche: string;
-
   @Field(() => TypeVin, { nullable: true })
   @OneToOne(() => TypeVin, { nullable: true, eager: true })
   type_vin: TypeVin;

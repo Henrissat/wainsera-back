@@ -68,7 +68,7 @@ export default class BouteilleService {
 
   async addBouteille(bouteilleInput: IAddBouteille): Promise<Bouteille> {
     try {
-      const { millesime, alcool, quantite, vinId, cepageIds, cuveeNom, regionId } = bouteilleInput;
+      const { millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, vinId, cepageIds, cuveeNom, regionId } = bouteilleInput;
   
       const vin = await this.vinRepository.findOne({ where: { id: vinId } });
       if (!vin) {
@@ -95,8 +95,13 @@ export default class BouteilleService {
   
       const newBouteille = this.db.create({
         millesime,
+        garde_apogee,
         alcool,
         quantite,
+        note,
+        note_perso,
+        bouche,
+        accord,
         vin,
         cepages,
         ...(cuvee && { cuvee }),
@@ -112,7 +117,7 @@ export default class BouteilleService {
 
   async updateBouteille(bouteilleInput: IUpdateBouteille): Promise<Bouteille> {
     try {
-      const { id, millesime, alcool, quantite, vinId, cepageIds, cuveeNom, regionId } = bouteilleInput;
+      const { id, millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, vinId, cepageIds, cuveeNom, regionId } = bouteilleInput;
 
       // Trouver la bouteille existante
       const existingBouteille = await this.db.findOne({ where: { id } });
@@ -122,8 +127,13 @@ export default class BouteilleService {
 
       // Mettre à jour les champs si les nouvelles valeurs sont fournies
       if (millesime !== undefined) existingBouteille.millesime = millesime;
+      if (garde_apogee !== undefined) existingBouteille.garde_apogee = garde_apogee;
       if (alcool !== undefined) existingBouteille.alcool = alcool;
       if (quantite !== undefined) existingBouteille.quantite = quantite;
+      if (note !== undefined) existingBouteille.note = note;
+      if (note_perso !== undefined) existingBouteille.note_perso = note_perso;
+      if (bouche !== undefined) existingBouteille.bouche = bouche;
+      if (accord !== undefined) existingBouteille.accord = accord;
 
       if (vinId !== undefined) {
         const vin = await this.vinRepository.findOne({ where: { id: vinId } });

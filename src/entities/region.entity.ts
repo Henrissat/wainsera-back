@@ -15,6 +15,14 @@ export class Region {
   @Column({ type: "text", nullable: true })
   nom_region: string;
 
+  @Field({ nullable: true })
+  @Column({ type: "int", nullable: true })
+  min_garde: number;
+
+  @Field({ nullable: true })  
+  @Column({ type: "int", nullable: true })
+  max_garde: number;
+
   @Field(() => Pays, { nullable: true })
   @ManyToOne(() => Pays, pays => pays.regions, { nullable: true })
   @JoinColumn({ name: "paysId" })
