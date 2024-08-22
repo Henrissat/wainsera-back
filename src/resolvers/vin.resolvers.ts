@@ -4,7 +4,7 @@ import VinService from "../services/vin.service";
 
 @Resolver(Vin)
 export default class VinResolver {
-  constructor(private readonly vinService: VinService) {}
+  private vinService = new VinService();
 
   @Query(() => [Vin])
   async vins() {

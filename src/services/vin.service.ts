@@ -1,4 +1,5 @@
 import { Repository, getRepository } from "typeorm";
+import datasource from "../lib/datasource";
 import { Vin } from "../entities/vin.entity";
 import { IAddVin, IUpdateVin } from "../resolvers/vin";
 
@@ -6,14 +7,17 @@ export default class VinService {
   private db: Repository<Vin>;
 
   constructor() {
-    this.db = getRepository(Vin);
+    this.db = datasource.getRepository(Vin);
   }
 
   async listVins(): Promise<Vin[]> {
     try {
-      const vins = await this.db.find({
-        relations: ["bouteilles", "cepages", "appellations"]
-      });
+      const vins = await this.db.find(
+      //   {
+      //   relations: ["cepages", "appellations"]
+      // }
+      );
+      console.log('vins', vins);
       return vins;
     } catch (error) {
       console.error("Error listing vins:", error);

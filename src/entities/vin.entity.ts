@@ -1,10 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToOne, ManyToMany, JoinTable } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 import { Bouteille } from "./bouteille.entity";
-import { Cuvee } from "./cuvee.entity";
-import { Cepage } from "./cepage.entity";
 import { Appellation } from "./appellation.entity";
-
 
 @ObjectType()
 @Entity()

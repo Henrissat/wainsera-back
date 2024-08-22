@@ -1,7 +1,8 @@
+// src/resolvers/bouteille.resolver.ts
 import { Resolver, Query, Mutation, Arg } from "type-graphql";
 import { Bouteille } from "../entities/bouteille.entity";
 import BouteilleService from "../services/bouteille.service";
-import { IAddBouteille } from "../resolvers/bouteille";
+import { IAddBouteille, IUpdateBouteille } from "./bouteille.input";
 
 @Resolver(Bouteille)
 export default class BouteilleResolver {
@@ -31,32 +32,29 @@ export default class BouteilleResolver {
     }
   }
 
-  // @Mutation(() => Bouteille)
-  // async addBouteille(
-  //   @Arg("bouteille") bouteilleInput: IAddBouteille
-  // ) {
-  //   try {
-  //     return await this.bouteilleService.addBouteille(bouteilleInput);
-  //   } catch (error) {
-  //     console.error("Error in addBouteille mutation:", error);
-  //     throw new Error("Une erreur s'est produite lors de l'ajout de la bouteille.");
-  //   }
-  // }
+  @Mutation(() => Bouteille)
+  async addBouteille(
+    @Arg("bouteille") bouteilleInput: IAddBouteille
+  ) {
+    try {
+      return await this.bouteilleService.addBouteille(bouteilleInput);
+    } catch (error) {
+      console.error("Error in addBouteille mutation:", error);
+      throw new Error("Une erreur s'est produite lors de l'ajout de la bouteille.");
+    }
+  }
 
-  // @Mutation(() => Bouteille, { nullable: true })
-  // async updateBouteille(
-  //   @Arg("id") id: number,
-  //   @Arg("millesime") millesime: number,
-  //   @Arg("alcool") alcool: number,
-  //   @Arg("quantite") quantite: number
-  // ) {
-  //   try {
-  //     return await this.bouteilleService.updateBouteille(id, { id, millesime, alcool, quantite });
-  //   } catch (error) {
-  //     console.error("Error in updateBouteille mutation:", error);
-  //     throw new Error("Une erreur s'est produite lors de la mise à jour de la bouteille.");
-  //   }
-  // }
+  @Mutation(() => Bouteille)
+  async updateBouteille(
+    @Arg("bouteille") bouteilleInput: IUpdateBouteille
+  ) {
+    try {
+      return await this.bouteilleService.updateBouteille(bouteilleInput);
+    } catch (error) {
+      console.error("Error in updateBouteille mutation:", error);
+      throw new Error("Une erreur s'est produite lors de la modification de la bouteille.");
+    }
+  }
 
   @Mutation(() => Boolean)
   async deleteBouteille(@Arg("id") id: number) {
