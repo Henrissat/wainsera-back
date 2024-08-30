@@ -38,6 +38,9 @@ export class IAddBouteille {
   @Field({ nullable: true })
   cuveeNom?: string;
 
+  @Field(() => Int, { nullable: true })
+  casierId?: number;
+
 }
 
 @InputType()
@@ -81,4 +84,6 @@ export class IUpdateBouteille {
   @Field({ nullable: true })
   cuveeNom?: string;
 
+  @Field(() => Int, { nullable: true })
+  casierId?: number;
 }

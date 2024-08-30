@@ -4,7 +4,7 @@ import { Casier } from "../entities/casier.entity";
 import { IAddCasier, IUpdateCasier } from "./casier";
 
 @Resolver()
-export class CasierResolver {
+export default class CasierResolver {
   private casierService = new CasierService();
 
   @Query(() => [Casier])

@@ -6,6 +6,8 @@ import { Cuvee } from "../entities/cuvee.entity";
 import { Cepage } from "../entities/cepage.entity";
 import { IAddBouteille, IUpdateBouteille } from "../resolvers/bouteille.input";
 import { Region } from "../entities/region.entity";
+import { Casier } from "../entities/casier.entity";
+import { IUpdateCasier } from "../resolvers/casier";
 
 export default class BouteilleService {
   private db: Repository<Bouteille>;
@@ -13,6 +15,7 @@ export default class BouteilleService {
   private cuveeRepository: Repository<Cuvee>;
   private cepageRepository: Repository<Cepage>;
   private regionRepository: Repository<Region>;
+  private casierRepository: Repository<Casier>;
 
   constructor() {
     this.db = datasource.getRepository(Bouteille);
@@ -20,6 +23,7 @@ export default class BouteilleService {
     this.cuveeRepository = datasource.getRepository(Cuvee);
     this.cepageRepository = datasource.getRepository(Cepage);
     this.regionRepository = datasource.getRepository(Region);
+    this.casierRepository = datasource.getRepository(Casier);
   }
 
   async listBouteilles(): Promise<Bouteille[]> {
@@ -68,11 +72,16 @@ export default class BouteilleService {
 
   async addBouteille(bouteilleInput: IAddBouteille): Promise<Bouteille> {
     try {
-      const { millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, vinId, cepageIds, cuveeNom, regionId } = bouteilleInput;
+      const { millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, vinId, casierId, cepageIds, cuveeNom, regionId } = bouteilleInput;
   
       const vin = await this.vinRepository.findOne({ where: { id: vinId } });
       if (!vin) {
         throw new Error("Vin non trouvé");
+      }
+
+      const casier = await this.db.findOne({ where: { id: casierId } });
+      if (!casier) {
+        throw new Error("Casier non trouvé");
       }
   
       const region = await this.regionRepository.findOne({ where: { id: regionId } }); 
@@ -105,7 +114,8 @@ export default class BouteilleService {
         vin,
         cepages,
         ...(cuvee && { cuvee }),
-        region
+        region,
+        casier
       });
   
       return await this.db.save(newBouteille);
@@ -117,7 +127,7 @@ export default class BouteilleService {
 
   async updateBouteille(bouteilleInput: IUpdateBouteille): Promise<Bouteille> {
     try {
-      const { id, millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, vinId, cepageIds, cuveeNom, regionId } = bouteilleInput;
+      const { id, millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, vinId, casierId, cepageIds, cuveeNom, regionId } = bouteilleInput;
 
       // Trouver la bouteille existante
       const existingBouteille = await this.db.findOne({ where: { id } });
@@ -171,6 +181,25 @@ export default class BouteilleService {
         }
         await this.cuveeRepository.save(cuvee);
         existingBouteille.cuvee = cuvee;
+      }
+
+      if (casierId) {
+        let casier = await this.casierRepository.findOne({ where: { id: casierId } });
+        if (!casier) {
+          casier = this.casierRepository.create({ rangee: 0, colonne: 0 });
+          await this.casierRepository.save(casier);
+        } else{
+          const updateCasierInput: IUpdateCasier = {
+            id: casier.id,
+            name: casier.name,
+            rangee: casier.rangee,
+            colonne: casier.colonne,
+
+          };
+          casier = this.casierRepository.merge(casier, updateCasierInput);
+          await this.casierRepository.save(casier);
+        }
+        existingBouteille.casier = casier;
       }
 
       // Enregistrer les modifications
