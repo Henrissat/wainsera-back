@@ -8,12 +8,13 @@ import BouteilleResolver from './resolvers/bouteille.resolver';
 import VinResolver from './resolvers/vin.resolvers';
 import RegionResolver from './resolvers/region.resolver';
 import CepageResolver from './resolvers/cepage.resolver';
+import CasierResolver from './resolvers/casier.resolver';
 
 
 async function main() {
 
   const schema = await buildSchema({
-    resolvers: [BouteilleResolver, VinResolver, RegionResolver, CepageResolver],
+    resolvers: [BouteilleResolver, VinResolver, RegionResolver, CepageResolver, CasierResolver],
     validate: false
   });
   const server = new ApolloServer({
