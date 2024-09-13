@@ -1,17 +1,16 @@
 import { Resolver, Query, Mutation, Arg, ID } from "type-graphql";
 import UserService from "../services/user.service";
 import { User } from "../entities/user.entity";
-import { IAddUser, IUpdateUser } from "../resolvers/user.d";
+import { IAddUser, IAddUserInput, IUpdateUser, IUser } from "../resolvers/user.input";
+import { generateToken } from "../lib/utilities";
+import bcrypt from 'bcrypt';
+import { LoginResponse } from "./user.types";
+
 
 @Resolver()
-export class UserResolver {
-  private userService: UserService;
+export default class UserResolver {
+  private userService = new UserService();
 
-  constructor() {
-    this.userService = new UserService();
-  }
-
-  // Liste tous les utilisateurs
   @Query(() => [User])
   async listUsers(): Promise<User[]> {
     try {
@@ -22,7 +21,6 @@ export class UserResolver {
     }
   }
 
-  // Récupère un utilisateur par son ID
   @Query(() => User, { nullable: true })
   async getUserById(@Arg("id", () => ID) id: string): Promise<User | null> {
     try {
@@ -33,20 +31,23 @@ export class UserResolver {
     }
   }
 
-  // Ajoute un nouvel utilisateur
   @Mutation(() => User)
   async addUser(
     @Arg("input", () => IAddUser) input: IAddUser
   ): Promise<User> {
     try {
-      return await this.userService.addUser(input);
+      console.log("Input received in resolver:", input);
+      console.log("UserService instance:", this.userService);
+      const result = await this.userService.addUser(input);
+      console.log("Result from service:", result);
+      return result.user; 
     } catch (error) {
-      console.error("Error adding user:", error);
+      console.error("Error adding user in resolver:", error);
       throw new Error("Une erreur s'est produite lors de l'ajout de l'utilisateur.");
     }
   }
+  
 
-  // Met à jour un utilisateur
   @Mutation(() => User)
   async updateUser(
     @Arg("id", () => ID) id: string,
@@ -60,7 +61,6 @@ export class UserResolver {
     }
   }
 
-  // Supprime un utilisateur
   @Mutation(() => Boolean)
   async deleteUser(
     @Arg("id", () => ID) id: string
@@ -70,6 +70,32 @@ export class UserResolver {
     } catch (error) {
       console.error("Error deleting user:", error);
       throw new Error("Une erreur s'est produite lors de la suppression de l'utilisateur.");
+    }
+  }
+
+  @Mutation(() => LoginResponse)
+  async login(
+    @Arg("input") input: IUser 
+  ): Promise<LoginResponse> {
+    const { email, password } = input;
+
+    try {
+      const user = await this.userService.getUserByEmail(email);
+      if (!user) {
+        throw new Error("Cet utilisateur n'existe pas");
+      }
+
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+        throw new Error("Vérifiez vos informations");
+      }
+
+      const token = generateToken({ email });
+
+      return { user, token }; 
+    } catch (error) {
+      console.error('Error during login:', error);
+      throw new Error("Une erreur s'est produite lors de la connexion.");
     }
   }
 }

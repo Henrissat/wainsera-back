@@ -9,12 +9,13 @@ import VinResolver from './resolvers/vin.resolvers';
 import RegionResolver from './resolvers/region.resolver';
 import CepageResolver from './resolvers/cepage.resolver';
 import CasierResolver from './resolvers/casier.resolver';
+import UserResolver from './resolvers/user.resolver';
 
 
 async function main() {
 
   const schema = await buildSchema({
-    resolvers: [BouteilleResolver, VinResolver, RegionResolver, CepageResolver, CasierResolver],
+    resolvers: [BouteilleResolver, VinResolver, RegionResolver, CepageResolver, CasierResolver, UserResolver],
     validate: false
   });
   const server = new ApolloServer({

@@ -11,15 +11,16 @@ export class User {
   id: string;
 
   @Field()
-  @Column({ type: "varchar", length: 100 })
+  @Column({ type: "text", length: 100 })
   fullname: string;
 
   @Field()
-  @Column({ type: "varchar", unique: true })
+  @Column({ type: "text", unique: true })
   @IsEmail()
   email: string;
 
-  @Column({ type: "varchar" })
+  @Field()
+  @Column({ type: "text" })
   password: string;
 
   @Field(() => [Bouteille], { nullable: true })

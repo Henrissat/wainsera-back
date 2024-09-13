@@ -1,7 +1,9 @@
+import bcrypt from 'bcrypt';
 import { Repository } from "typeorm";
 import datasource from "../lib/datasource";
 import { User } from "../entities/user.entity";
-import { IAddUser, IUpdateUser } from "../resolvers/user";
+import { IAddUser, IUpdateUser } from "../resolvers/user.input";
+import { generateToken } from '../lib/utilities';
 
 export default class UserService {
   private db: Repository<User>;
@@ -10,7 +12,7 @@ export default class UserService {
     this.db = datasource.getRepository(User);
   }
 
-  // Liste tous les utilisateurs
+
   async listUsers(): Promise<User[]> {
     try {
       const users = await this.db.find();
@@ -21,7 +23,7 @@ export default class UserService {
     }
   }
 
-  // Récupère un utilisateur par ID
+
   async getUserById(id: string): Promise<User | null> {
     try {
       return await this.db.findOne({ where: { id } });
@@ -31,18 +33,38 @@ export default class UserService {
     }
   }
 
-  // Ajoute un nouvel utilisateur
-  async addUser({ fullname, email, password }: IAddUser): Promise<User> {
-    try {
-      const newUser = this.db.create({ fullname, email, password });
-      return await this.db.save(newUser);
-    } catch (error) {
-      console.error("Error adding user:", error);
-      throw new Error("Une erreur s'est produite lors de l'ajout de l'utilisateur.");
+  async getUserByEmail(email: string) {
+    if (email) {
+      return await this.db.findOneBy({ email });
+    } else {
+      return null;
     }
   }
 
-  // Met à jour un utilisateur
+  async addUser(input: IAddUser & { password: string }): Promise<{ user: User; token: string }> {
+    try {
+      console.log("Input received:", input); 
+      const hashedPassword = await bcrypt.hash(input.password, 10);
+      console.log("Password hashed:", hashedPassword); 
+  
+      const user = await this.db.save({
+        fullname: input.fullname,
+        email: input.email,
+        password: hashedPassword,
+      });
+      console.log("User saved:", user);
+  
+      const token = generateToken({ email: user.email });
+      console.log("Token generated:", token);
+  
+      return { user, token };
+    } catch (error) {
+      console.error("Error adding user in service:", error);
+      throw new Error("Une erreur s'est produite lors de l'ajout de l'utilisateur.");
+    }
+  }
+  
+
   async updateUser(id: string, { fullname, email, password }: IUpdateUser): Promise<User> {
     console.log('Updating user with ID:', id);
     try {
@@ -51,7 +73,6 @@ export default class UserService {
         throw new Error("User not found");
       }
 
-      // Mise à jour des champs
       if (fullname !== undefined) {
         existingUser.fullname = fullname;
       }
@@ -69,7 +90,6 @@ export default class UserService {
     }
   }
 
-  // Supprime un utilisateur
   async deleteUser(id: string): Promise<boolean> {
     console.log('Deleting user with ID:', id);
     try {

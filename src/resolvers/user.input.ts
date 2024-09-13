@@ -27,3 +27,25 @@ export class IUpdateUser {
   @Field({ nullable: true })
   password?: string;
 }
+
+@InputType()
+export class IAddUserInput {
+  @Field(() => IAddUser)
+  user: IAddUser;
+
+  @Field()
+  token: string;
+}
+
+@InputType()
+export class IUser {
+  @Field()
+  fullname: string;
+
+  @Field()
+  email: string;
+
+  @Field()
+  password: string;
+}
+
