@@ -7,6 +7,7 @@ import { Avis } from "./avis.entity";
 import { Cepage } from "./cepage.entity";
 import { BouteilleCepage } from "./bouteilleCepage.entity";
 import { Region } from "./region.entity";
+import { User } from "./user.entity";
 
 @ObjectType()
 @Entity()
@@ -88,4 +89,9 @@ export class Bouteille {
   @Field(() => [Avis], { nullable: true })
   @OneToMany(() => Avis, avis => avis.bouteille)
   avis: Avis[];
+
+  @Field(() => User, { nullable: true })
+  @ManyToOne(() => User, user => user.bouteilles, { nullable: true, eager: true })
+  @JoinColumn({ name: "userId" })
+  user: User;
 }

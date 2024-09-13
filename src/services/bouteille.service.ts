@@ -79,7 +79,7 @@ export default class BouteilleService {
         throw new Error("Vin non trouvé");
       }
 
-      const casier = await this.db.findOne({ where: { id: casierId } });
+      const casier = await this.casierRepository.findOne({ where: { id: casierId } });
       if (!casier) {
         throw new Error("Casier non trouvé");
       }
@@ -153,6 +153,14 @@ export default class BouteilleService {
         existingBouteille.vin = vin;
       }
 
+      if(casierId !== undefined) {
+        const casier = await this.casierRepository.findOne({ where: { id: casierId } });
+        if (!casier) {
+          throw new Error("Casier non trouvé");
+        }
+        existingBouteille.casier = casier;
+      }
+
       if (regionId !== undefined) {
         const region = await this.regionRepository.findOne({ where: { id: regionId } });
         if (!region) {
@@ -183,24 +191,25 @@ export default class BouteilleService {
         existingBouteille.cuvee = cuvee;
       }
 
-      if (casierId) {
-        let casier = await this.casierRepository.findOne({ where: { id: casierId } });
-        if (!casier) {
-          casier = this.casierRepository.create({ rangee: 0, colonne: 0 });
-          await this.casierRepository.save(casier);
-        } else{
-          const updateCasierInput: IUpdateCasier = {
-            id: casier.id,
-            name: casier.name,
-            rangee: casier.rangee,
-            colonne: casier.colonne,
+      // if (casierId) {
+      //   let casier = await this.casierRepository.findOne({ where: { id: casierId } });
+      //   if (!casier) {
+      //     casier = this.casierRepository.create({ rangee: 0, colonne: 0 });
+      //     await this.casierRepository.save(casier);
+      //   } else{
+      //     const updateCasierInput: IUpdateCasier = {
+      //       id: casier.id,
+      //       name: casier.name,
+      //       rangee: casier.rangee,
+      //       colonne: casier.colonne,
 
-          };
-          casier = this.casierRepository.merge(casier, updateCasierInput);
-          await this.casierRepository.save(casier);
-        }
-        existingBouteille.casier = casier;
-      }
+      //     };
+      //     casier = this.casierRepository.merge(casier, updateCasierInput);
+      //     await this.casierRepository.save(casier);
+      //   }
+      //   existingBouteille.casier = casier;
+      // }
+ 
 
       // Enregistrer les modifications
       return await this.db.save(existingBouteille);
