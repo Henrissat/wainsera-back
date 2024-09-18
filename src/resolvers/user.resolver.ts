@@ -4,7 +4,8 @@ import { User } from "../entities/user.entity";
 import { IAddUser, IAddUserInput, IUpdateUser, IUser } from "../resolvers/user.input";
 import { generateToken } from "../lib/utilities";
 import bcrypt from 'bcrypt';
-import { LoginResponse } from "./user.types";
+import { LoginResponse, LoginUser } from "./user.types";
+import { ILoginInput } from "./login.input";
 
 
 @Resolver()
@@ -31,6 +32,40 @@ export default class UserResolver {
     }
   }
 
+  @Query(() => LoginResponse)
+  async login(
+    @Arg("input") input: ILoginInput
+  ): Promise<LoginResponse> {
+    const { email, password } = input;
+  
+    try {
+      const user = await this.userService.getUserByEmail(email);
+      if (!user) {
+        throw new Error("Cet utilisateur n'existe pas");
+      }
+  
+      const match = await bcrypt.compare(password, user.password);
+      if (!match) {
+        throw new Error("Vérifiez vos informations");
+      }
+  
+      const token = generateToken({ email });
+  
+      return { 
+        user: {
+          fullname: user.fullname,
+          email: user.email
+        },
+        token
+      };
+    } catch (error) {
+      console.error('Error during login:', error);
+      throw new Error("Une erreur s'est produite lors de la connexion.");
+    }
+  }
+  
+
+  
   @Mutation(() => User)
   async addUser(
     @Arg("input", () => IAddUser) input: IAddUser
@@ -73,29 +108,4 @@ export default class UserResolver {
     }
   }
 
-  @Mutation(() => LoginResponse)
-  async login(
-    @Arg("input") input: IUser 
-  ): Promise<LoginResponse> {
-    const { email, password } = input;
-
-    try {
-      const user = await this.userService.getUserByEmail(email);
-      if (!user) {
-        throw new Error("Cet utilisateur n'existe pas");
-      }
-
-      const match = await bcrypt.compare(password, user.password);
-      if (!match) {
-        throw new Error("Vérifiez vos informations");
-      }
-
-      const token = generateToken({ email });
-
-      return { user, token }; 
-    } catch (error) {
-      console.error('Error during login:', error);
-      throw new Error("Une erreur s'est produite lors de la connexion.");
-    }
-  }
 }
