@@ -8,6 +8,7 @@ import { IAddBouteille, IUpdateBouteille } from "../resolvers/bouteille.input";
 import { Region } from "../entities/region.entity";
 import { Casier } from "../entities/casier.entity";
 import { IUpdateCasier } from "../resolvers/casier";
+import { User } from "../entities/user.entity";
 
 export default class BouteilleService {
   private db: Repository<Bouteille>;
@@ -16,6 +17,7 @@ export default class BouteilleService {
   private cepageRepository: Repository<Cepage>;
   private regionRepository: Repository<Region>;
   private casierRepository: Repository<Casier>;
+  private userRepository: Repository<User>;
 
   constructor() {
     this.db = datasource.getRepository(Bouteille);
@@ -24,6 +26,7 @@ export default class BouteilleService {
     this.cepageRepository = datasource.getRepository(Cepage);
     this.regionRepository = datasource.getRepository(Region);
     this.casierRepository = datasource.getRepository(Casier);
+    this.userRepository = datasource.getRepository(User);
   }
 
   async listBouteilles(): Promise<Bouteille[]> {
@@ -72,7 +75,7 @@ export default class BouteilleService {
 
   async addBouteille(bouteilleInput: IAddBouteille): Promise<Bouteille> {
     try {
-      const { millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, vinId, casierId, cepageIds, cuveeNom, regionId } = bouteilleInput;
+      const { millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, vinId, casierId, cepageIds, cuveeNom, regionId, userId } = bouteilleInput;
   
       const vin = await this.vinRepository.findOne({ where: { id: vinId } });
       if (!vin) {
@@ -101,6 +104,11 @@ export default class BouteilleService {
         cuvee = this.cuveeRepository.create({ nom_domaine: cuveeNom });
         await this.cuveeRepository.save(cuvee);
       }
+
+      const user = await this.userRepository.findOne({ where: { id: userId } });
+      if (!user) {
+        throw new Error("Utilisateur non trouvé");
+      }
   
       const newBouteille = this.db.create({
         millesime,
@@ -115,7 +123,8 @@ export default class BouteilleService {
         cepages,
         ...(cuvee && { cuvee }),
         region,
-        casier
+        casier,
+        user
       });
   
       return await this.db.save(newBouteille);
@@ -127,7 +136,7 @@ export default class BouteilleService {
 
   async updateBouteille(bouteilleInput: IUpdateBouteille): Promise<Bouteille> {
     try {
-      const { id, millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, vinId, casierId, cepageIds, cuveeNom, regionId } = bouteilleInput;
+      const { id, millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, vinId, casierId, cepageIds, cuveeNom, regionId, userId } = bouteilleInput;
 
       // Trouver la bouteille existante
       const existingBouteille = await this.db.findOne({ where: { id } });
@@ -189,6 +198,12 @@ export default class BouteilleService {
         }
         await this.cuveeRepository.save(cuvee);
         existingBouteille.cuvee = cuvee;
+      }
+
+      if (userId !== undefined) {
+        const user = await this.userRepository.findOne({ where: { id: userId } });
+        if (!user) throw new Error("Utilisateur non trouvé");
+        existingBouteille.user = user;
       }
 
       // if (casierId) {

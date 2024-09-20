@@ -40,6 +40,9 @@ export class IAddUserInput {
 @InputType()
 export class IUser {
   @Field()
+  id: string;
+
+  @Field()
   fullname: string;
 
   @Field()

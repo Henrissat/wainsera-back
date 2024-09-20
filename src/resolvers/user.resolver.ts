@@ -1,10 +1,10 @@
 import { Resolver, Query, Mutation, Arg, ID } from "type-graphql";
 import UserService from "../services/user.service";
 import { User } from "../entities/user.entity";
-import { IAddUser, IAddUserInput, IUpdateUser, IUser } from "../resolvers/user.input";
+import { IAddUser, IUpdateUser } from "../resolvers/user.input";
 import { generateToken } from "../lib/utilities";
 import bcrypt from 'bcrypt';
-import { LoginResponse, LoginUser } from "./user.types";
+import { LoginResponse } from "./user.types";
 import { ILoginInput } from "./login.input";
 
 
@@ -54,7 +54,8 @@ export default class UserResolver {
       return { 
         user: {
           fullname: user.fullname,
-          email: user.email
+          email: user.email,
+          id: user.id
         },
         token
       };

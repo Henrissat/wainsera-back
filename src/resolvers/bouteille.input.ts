@@ -41,6 +41,8 @@ export class IAddBouteille {
   @Field(() => Int, { nullable: true })
   casierId?: number;
 
+  @Field(() => String, { nullable: true })
+  userId?: string;
 }
 
 @InputType()
@@ -86,4 +88,7 @@ export class IUpdateBouteille {
 
   @Field(() => Int, { nullable: true })
   casierId?: number;
+
+  @Field(() => String, { nullable: true })
+  userId?: string;
 }
