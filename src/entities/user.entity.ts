@@ -11,11 +11,11 @@ export class User {
   id: string;
 
   @Field()
-  @Column({ type: "text", length: 100 })
+  @Column({ type: "varchar", length: 100 })
   fullname: string;
 
   @Field()
-  @Column({ type: "text", unique: true })
+  @Column({ type: "varchar", unique: true })
   @IsEmail()
   email: string;
 
