@@ -82,7 +82,7 @@ export class Bouteille {
   region: Region;
 
   @Field(() => Casier, { nullable: true })
-  @OneToOne(() => Casier, { eager: true, nullable: true })
+  @ManyToOne(() => Casier, casier => casier.bouteilles, { nullable: true })
   @JoinColumn({ name: "casierId" })
   casier: Casier;
 

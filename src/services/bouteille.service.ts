@@ -1,4 +1,4 @@
-import { getRepository, Repository } from "typeorm";
+import { getRepository, In, Repository } from "typeorm";
 import datasource from "../lib/datasource";
 import { Bouteille } from "../entities/bouteille.entity";
 import { Vin } from "../entities/vin.entity";
@@ -55,8 +55,6 @@ export default class BouteilleService {
     }
   }
 
-  
-
   async deleteBouteille(id: number): Promise<boolean> {
     console.log('Deleting bouteille with ID:', id);
     try {
@@ -94,7 +92,9 @@ export default class BouteilleService {
 
       // const paysId = region.pays.id;
   
-      const cepages = await this.cepageRepository.findByIds(cepageIds);
+      const cepages = await this.cepageRepository.find({
+        where: { id: In(cepageIds) },
+      });
       if (cepages.length !== cepageIds.length) {
         throw new Error("Un ou plusieurs cépages non trouvés");
       }
