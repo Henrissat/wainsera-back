@@ -8,7 +8,7 @@ export class IAddBouteille {
   @Field(() => Int, { nullable: true })
   garde_apogee?: number;
 
-  @Field(() => Int)
+  @Field(() => Float)
   alcool: number;
 
   @Field(() => Int)
@@ -56,7 +56,7 @@ export class IUpdateBouteille {
   @Field(() => Int, { nullable: true })
   garde_apogee?: number;
 
-  @Field(() => Int, { nullable: true })
+  @Field(() => Float, { nullable: true })
   alcool?: number;
 
   @Field(() => Int, { nullable: true })
