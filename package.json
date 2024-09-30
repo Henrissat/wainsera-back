@@ -4,7 +4,7 @@
   "main": "index.ts",
   "scripts": {
     "build": "tsc",
-    "start": "node src/index.js",
+    "start": "node src/index.ts",
     "dev": "ts-node-dev --exit-child --watch src --poll src/index.ts"
   },
   "license": "MIT",
