@@ -6,3 +6,5 @@ package-lock.lock
 wainsera.sql
 wainsera.sqlite
 wainsera.sqlpro
+docker-compose.yml
+Dockerfile
