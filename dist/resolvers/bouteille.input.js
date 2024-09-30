@@ -23,7 +23,7 @@ __decorate([
     __metadata("design:type", Number)
 ], IAddBouteille.prototype, "garde_apogee", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => type_graphql_1.Int),
+    (0, type_graphql_1.Field)(() => type_graphql_1.Float),
     __metadata("design:type", Number)
 ], IAddBouteille.prototype, "alcool", void 0);
 __decorate([
@@ -89,7 +89,7 @@ __decorate([
     __metadata("design:type", Number)
 ], IUpdateBouteille.prototype, "garde_apogee", void 0);
 __decorate([
-    (0, type_graphql_1.Field)(() => type_graphql_1.Int, { nullable: true }),
+    (0, type_graphql_1.Field)(() => type_graphql_1.Float, { nullable: true }),
     __metadata("design:type", Number)
 ], IUpdateBouteille.prototype, "alcool", void 0);
 __decorate([

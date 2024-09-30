@@ -24,12 +24,12 @@ __decorate([
 ], User.prototype, "id", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)({ type: "text", length: 100 }),
+    (0, typeorm_1.Column)({ type: "varchar", length: 100 }),
     __metadata("design:type", String)
 ], User.prototype, "fullname", void 0);
 __decorate([
     (0, type_graphql_1.Field)(),
-    (0, typeorm_1.Column)({ type: "text", unique: true }),
+    (0, typeorm_1.Column)({ type: "varchar", unique: true }),
     (0, class_validator_1.IsEmail)(),
     __metadata("design:type", String)
 ], User.prototype, "email", void 0);

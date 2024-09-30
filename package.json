@@ -2,6 +2,7 @@
   "name": "server-wainsera",
   "version": "1.0.0",
   "main": "index.ts",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "start": "node src/index.ts",
