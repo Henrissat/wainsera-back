@@ -27,6 +27,7 @@ databaseConfig = {
     entities: [
     Bouteille, User, Cuvee, Vin, Appellation, Avis, TypeVin, Casier, Region, Pays, BouteilleCepage, Cepage
   ],
+  driver: require('mysql2')
 };
 
 

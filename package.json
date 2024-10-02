@@ -22,7 +22,7 @@
     "express": "^4.21.0",
     "graphql": "^16.6.0",
     "jsonwebtoken": "^9.0.2",
-    "mysql": "^2.18.1",
+    "mysql2": "^3.11.3",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.1.6",
     "ts-node-dev": "^2.0.0",
