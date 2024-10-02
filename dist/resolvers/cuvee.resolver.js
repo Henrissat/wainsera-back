@@ -11,15 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -32,66 +23,56 @@ let CuveeResolver = class CuveeResolver {
     constructor() {
         this.cuveeService = new cuvee_service_1.default();
     }
-    cuvees() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.cuveeService.listCuvees();
-            }
-            catch (error) {
-                console.error("Error in cuvees query:", error);
-                throw new Error("Une erreur s'est produite lors de la récupération des cuvées.");
-            }
-        });
+    async cuvees() {
+        try {
+            return await this.cuveeService.listCuvees();
+        }
+        catch (error) {
+            console.error("Error in cuvees query:", error);
+            throw new Error("Une erreur s'est produite lors de la récupération des cuvées.");
+        }
     }
-    getCuveeById(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const cuvee = yield this.cuveeService.getCuveeById(id);
-                if (!cuvee) {
-                    throw new Error("Cuvee not found");
-                }
-                return cuvee;
+    async getCuveeById(id) {
+        try {
+            const cuvee = await this.cuveeService.getCuveeById(id);
+            if (!cuvee) {
+                throw new Error("Cuvee not found");
             }
-            catch (error) {
-                console.error("Error in getCuveeById query:", error);
-                throw new Error("Une erreur s'est produite lors de la récupération de la cuvée.");
-            }
-        });
+            return cuvee;
+        }
+        catch (error) {
+            console.error("Error in getCuveeById query:", error);
+            throw new Error("Une erreur s'est produite lors de la récupération de la cuvée.");
+        }
     }
-    addCuvee(nom_domaine) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.cuveeService.addCuvee({ nom_domaine });
-            }
-            catch (error) {
-                console.error("Error in addCuvee mutation:", error);
-                throw new Error("Une erreur s'est produite lors de l'ajout de la cuvée.");
-            }
-        });
+    async addCuvee(nom_domaine) {
+        try {
+            return await this.cuveeService.addCuvee({ nom_domaine });
+        }
+        catch (error) {
+            console.error("Error in addCuvee mutation:", error);
+            throw new Error("Une erreur s'est produite lors de l'ajout de la cuvée.");
+        }
     }
-    updateCuvee(id, nom_domaine) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.cuveeService.updateCuvee(id, { id, nom_domaine });
-            }
-            catch (error) {
-                console.error("Error in updateCuvee mutation:", error);
-                throw new Error("Une erreur s'est produite lors de la mise à jour de la cuvée.");
-            }
-        });
+    async updateCuvee(id, nom_domaine) {
+        try {
+            return await this.cuveeService.updateCuvee(id, { id, nom_domaine });
+        }
+        catch (error) {
+            console.error("Error in updateCuvee mutation:", error);
+            throw new Error("Une erreur s'est produite lors de la mise à jour de la cuvée.");
+        }
     }
-    deleteCuvee(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            console.log('Resolver: Deleting cuvee with ID:', id);
-            try {
-                const success = yield this.cuveeService.deleteCuvee(id);
-                return success;
-            }
-            catch (error) {
-                console.error("Error in deleteCuvee mutation:", error);
-                throw new Error("Une erreur s'est produite lors de la suppression de la cuvée.");
-            }
-        });
+    async deleteCuvee(id) {
+        console.log('Resolver: Deleting cuvee with ID:', id);
+        try {
+            const success = await this.cuveeService.deleteCuvee(id);
+            return success;
+        }
+        catch (error) {
+            console.error("Error in deleteCuvee mutation:", error);
+            throw new Error("Une erreur s'est produite lors de la suppression de la cuvée.");
+        }
     }
 };
 __decorate([

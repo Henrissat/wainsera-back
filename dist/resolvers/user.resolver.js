@@ -11,15 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -36,92 +27,80 @@ let UserResolver = class UserResolver {
     constructor() {
         this.userService = new user_service_1.default();
     }
-    listUsers() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.userService.listUsers();
-            }
-            catch (error) {
-                console.error("Error listing users:", error);
-                throw new Error("Une erreur s'est produite lors de la récupération des utilisateurs.");
-            }
-        });
+    async listUsers() {
+        try {
+            return await this.userService.listUsers();
+        }
+        catch (error) {
+            console.error("Error listing users:", error);
+            throw new Error("Une erreur s'est produite lors de la récupération des utilisateurs.");
+        }
     }
-    getUserById(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.userService.getUserById(id);
-            }
-            catch (error) {
-                console.error("Error getting user by ID:", error);
-                throw new Error("Une erreur s'est produite lors de la récupération de l'utilisateur.");
-            }
-        });
+    async getUserById(id) {
+        try {
+            return await this.userService.getUserById(id);
+        }
+        catch (error) {
+            console.error("Error getting user by ID:", error);
+            throw new Error("Une erreur s'est produite lors de la récupération de l'utilisateur.");
+        }
     }
-    login(input) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const { email, password } = input;
-            try {
-                const user = yield this.userService.getUserByEmail(email);
-                if (!user) {
-                    throw new Error("Cet utilisateur n'existe pas");
-                }
-                const match = yield bcrypt_1.default.compare(password, user.password);
-                if (!match) {
-                    throw new Error("Vérifiez vos informations");
-                }
-                const token = (0, utilities_1.generateToken)({ email });
-                return {
-                    user: {
-                        fullname: user.fullname,
-                        email: user.email,
-                        id: user.id
-                    },
-                    token
-                };
+    async login(input) {
+        const { email, password } = input;
+        try {
+            const user = await this.userService.getUserByEmail(email);
+            if (!user) {
+                throw new Error("Cet utilisateur n'existe pas");
             }
-            catch (error) {
-                console.error('Error during login:', error);
-                throw new Error("Une erreur s'est produite lors de la connexion.");
+            const match = await bcrypt_1.default.compare(password, user.password);
+            if (!match) {
+                throw new Error("Vérifiez vos informations");
             }
-        });
+            const token = (0, utilities_1.generateToken)({ email });
+            return {
+                user: {
+                    fullname: user.fullname,
+                    email: user.email,
+                    id: user.id
+                },
+                token
+            };
+        }
+        catch (error) {
+            console.error('Error during login:', error);
+            throw new Error("Une erreur s'est produite lors de la connexion.");
+        }
     }
-    addUser(input) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                console.log("Input received in resolver:", input);
-                console.log("UserService instance:", this.userService);
-                const result = yield this.userService.addUser(input);
-                console.log("Result from service:", result);
-                return result.user;
-            }
-            catch (error) {
-                console.error("Error adding user in resolver:", error);
-                throw new Error("Une erreur s'est produite lors de l'ajout de l'utilisateur.");
-            }
-        });
+    async addUser(input) {
+        try {
+            console.log("Input received in resolver:", input);
+            console.log("UserService instance:", this.userService);
+            const result = await this.userService.addUser(input);
+            console.log("Result from service:", result);
+            return result.user;
+        }
+        catch (error) {
+            console.error("Error adding user in resolver:", error);
+            throw new Error("Une erreur s'est produite lors de l'ajout de l'utilisateur.");
+        }
     }
-    updateUser(id, input) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.userService.updateUser(id, input);
-            }
-            catch (error) {
-                console.error("Error updating user:", error);
-                throw new Error("Une erreur s'est produite lors de la mise à jour de l'utilisateur.");
-            }
-        });
+    async updateUser(id, input) {
+        try {
+            return await this.userService.updateUser(id, input);
+        }
+        catch (error) {
+            console.error("Error updating user:", error);
+            throw new Error("Une erreur s'est produite lors de la mise à jour de l'utilisateur.");
+        }
     }
-    deleteUser(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.userService.deleteUser(id);
-            }
-            catch (error) {
-                console.error("Error deleting user:", error);
-                throw new Error("Une erreur s'est produite lors de la suppression de l'utilisateur.");
-            }
-        });
+    async deleteUser(id) {
+        try {
+            return await this.userService.deleteUser(id);
+        }
+        catch (error) {
+            console.error("Error deleting user:", error);
+            throw new Error("Une erreur s'est produite lors de la suppression de l'utilisateur.");
+        }
     }
 };
 __decorate([

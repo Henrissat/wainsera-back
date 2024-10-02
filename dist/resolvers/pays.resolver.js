@@ -11,15 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -31,31 +22,27 @@ let PaysResolver = class PaysResolver {
     constructor() {
         this.paysService = new pays_service_1.default();
     }
-    pays() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.paysService.listPays();
-            }
-            catch (error) {
-                console.error("Error in pays query:", error);
-                throw new Error("Une erreur s'est produite lors de la récupération des pays.");
-            }
-        });
+    async pays() {
+        try {
+            return await this.paysService.listPays();
+        }
+        catch (error) {
+            console.error("Error in pays query:", error);
+            throw new Error("Une erreur s'est produite lors de la récupération des pays.");
+        }
     }
-    getPaysById(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const pays = yield this.paysService.getPaysById(id);
-                if (!pays) {
-                    throw new Error("Pays not found");
-                }
-                return pays;
+    async getPaysById(id) {
+        try {
+            const pays = await this.paysService.getPaysById(id);
+            if (!pays) {
+                throw new Error("Pays not found");
             }
-            catch (error) {
-                console.error("Error in getPaysById query:", error);
-                throw new Error("Une erreur s'est produite lors de la récupération du pays.");
-            }
-        });
+            return pays;
+        }
+        catch (error) {
+            console.error("Error in getPaysById query:", error);
+            throw new Error("Une erreur s'est produite lors de la récupération du pays.");
+        }
     }
 };
 __decorate([

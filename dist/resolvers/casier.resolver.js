@@ -11,15 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -32,15 +23,11 @@ let CasierResolver = class CasierResolver {
     constructor() {
         this.casierService = new casier_service_1.default();
     }
-    casiers() {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.casierService.listCasiers();
-        });
+    async casiers() {
+        return this.casierService.listCasiers();
     }
-    casier(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.casierService.getCasierById(id);
-        });
+    async casier(id) {
+        return this.casierService.getCasierById(id);
     }
     // @Mutation(() => Casier)
     // async addCasier(@Arg("data") data: IAddCasier): Promise<Casier> {
@@ -50,10 +37,8 @@ let CasierResolver = class CasierResolver {
     // async updateCasier(@Arg("id") id: number, @Arg("data") data: IUpdateCasier): Promise<Casier> {
     //   return this.casierService.updateCasier(id, data);
     // }
-    deleteCasier(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            return this.casierService.deleteCasier(id);
-        });
+    async deleteCasier(id) {
+        return this.casierService.deleteCasier(id);
     }
 };
 __decorate([

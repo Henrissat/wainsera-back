@@ -11,15 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -31,65 +22,55 @@ let CepageResolver = class CepageResolver {
     constructor() {
         this.cepageService = new cepage_service_1.default();
     }
-    cepages() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.cepageService.listCepages();
-            }
-            catch (error) {
-                console.error("Error in cepages query:", error);
-                throw new Error("Une erreur s'est produite lors de la récupération des cépages.");
-            }
-        });
+    async cepages() {
+        try {
+            return await this.cepageService.listCepages();
+        }
+        catch (error) {
+            console.error("Error in cepages query:", error);
+            throw new Error("Une erreur s'est produite lors de la récupération des cépages.");
+        }
     }
-    getCepageById(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const cepage = yield this.cepageService.getCepageById(id);
-                if (!cepage) {
-                    throw new Error("Cepage not found");
-                }
-                return cepage;
+    async getCepageById(id) {
+        try {
+            const cepage = await this.cepageService.getCepageById(id);
+            if (!cepage) {
+                throw new Error("Cepage not found");
             }
-            catch (error) {
-                console.error("Error in getCepageById query:", error);
-                throw new Error("Une erreur s'est produite lors de la récupération du cépage.");
-            }
-        });
+            return cepage;
+        }
+        catch (error) {
+            console.error("Error in getCepageById query:", error);
+            throw new Error("Une erreur s'est produite lors de la récupération du cépage.");
+        }
     }
-    addCepage(nom_cepage) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.cepageService.addCepage({ nom_cepage });
-            }
-            catch (error) {
-                console.error("Error in addCepage mutation:", error);
-                throw new Error("Une erreur s'est produite lors de l'ajout du cépage.");
-            }
-        });
+    async addCepage(nom_cepage) {
+        try {
+            return await this.cepageService.addCepage({ nom_cepage });
+        }
+        catch (error) {
+            console.error("Error in addCepage mutation:", error);
+            throw new Error("Une erreur s'est produite lors de l'ajout du cépage.");
+        }
     }
-    updateCepage(id, nom_cepage) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.cepageService.updateCepage(id, { id, nom_cepage });
-            }
-            catch (error) {
-                console.error("Error in updateCepage mutation:", error);
-                throw new Error("Une erreur s'est produite lors de la mise à jour du cépage.");
-            }
-        });
+    async updateCepage(id, nom_cepage) {
+        try {
+            return await this.cepageService.updateCepage(id, { id, nom_cepage });
+        }
+        catch (error) {
+            console.error("Error in updateCepage mutation:", error);
+            throw new Error("Une erreur s'est produite lors de la mise à jour du cépage.");
+        }
     }
-    deleteCepage(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const success = yield this.cepageService.deleteCepage(id);
-                return success;
-            }
-            catch (error) {
-                console.error("Error in deleteCepage mutation:", error);
-                throw new Error("Une erreur s'est produite lors de la suppression du cépage.");
-            }
-        });
+    async deleteCepage(id) {
+        try {
+            const success = await this.cepageService.deleteCepage(id);
+            return success;
+        }
+        catch (error) {
+            console.error("Error in deleteCepage mutation:", error);
+            throw new Error("Une erreur s'est produite lors de la suppression du cépage.");
+        }
     }
 };
 __decorate([

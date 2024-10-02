@@ -11,15 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -33,66 +24,56 @@ let BouteilleResolver = class BouteilleResolver {
     constructor() {
         this.bouteilleService = new bouteille_service_1.default();
     }
-    bouteilles() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.bouteilleService.listBouteilles();
-            }
-            catch (error) {
-                console.error("Error in bouteilles query:", error);
-                throw new Error("Une erreur s'est produite lors de la récupération des bouteilles.");
-            }
-        });
+    async bouteilles() {
+        try {
+            return await this.bouteilleService.listBouteilles();
+        }
+        catch (error) {
+            console.error("Error in bouteilles query:", error);
+            throw new Error("Une erreur s'est produite lors de la récupération des bouteilles.");
+        }
     }
-    getBouteilleById(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const bouteille = yield this.bouteilleService.getBouteilleById(id);
-                if (!bouteille) {
-                    throw new Error("Bouteille not found");
-                }
-                return bouteille;
+    async getBouteilleById(id) {
+        try {
+            const bouteille = await this.bouteilleService.getBouteilleById(id);
+            if (!bouteille) {
+                throw new Error("Bouteille not found");
             }
-            catch (error) {
-                console.error("Error in getBouteilleById query:", error);
-                throw new Error("Une erreur s'est produite lors de la récupération de la bouteille.");
-            }
-        });
+            return bouteille;
+        }
+        catch (error) {
+            console.error("Error in getBouteilleById query:", error);
+            throw new Error("Une erreur s'est produite lors de la récupération de la bouteille.");
+        }
     }
-    addBouteille(bouteilleInput) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.bouteilleService.addBouteille(bouteilleInput);
-            }
-            catch (error) {
-                console.error("Error in addBouteille mutation:", error);
-                throw new Error("Une erreur s'est produite lors de l'ajout de la bouteille.");
-            }
-        });
+    async addBouteille(bouteilleInput) {
+        try {
+            return await this.bouteilleService.addBouteille(bouteilleInput);
+        }
+        catch (error) {
+            console.error("Error in addBouteille mutation:", error);
+            throw new Error("Une erreur s'est produite lors de l'ajout de la bouteille.");
+        }
     }
-    updateBouteille(bouteilleInput) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.bouteilleService.updateBouteille(bouteilleInput);
-            }
-            catch (error) {
-                console.error("Error in updateBouteille mutation:", error);
-                throw new Error("Une erreur s'est produite lors de la modification de la bouteille.");
-            }
-        });
+    async updateBouteille(bouteilleInput) {
+        try {
+            return await this.bouteilleService.updateBouteille(bouteilleInput);
+        }
+        catch (error) {
+            console.error("Error in updateBouteille mutation:", error);
+            throw new Error("Une erreur s'est produite lors de la modification de la bouteille.");
+        }
     }
-    deleteBouteille(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            console.log('Resolver: Deleting bouteille with ID:', id);
-            try {
-                const success = yield this.bouteilleService.deleteBouteille(id);
-                return success;
-            }
-            catch (error) {
-                console.error("Error in deleteBouteille mutation:", error);
-                throw new Error("Une erreur s'est produite lors de la suppression de la bouteille.");
-            }
-        });
+    async deleteBouteille(id) {
+        console.log('Resolver: Deleting bouteille with ID:', id);
+        try {
+            const success = await this.bouteilleService.deleteBouteille(id);
+            return success;
+        }
+        catch (error) {
+            console.error("Error in deleteBouteille mutation:", error);
+            throw new Error("Une erreur s'est produite lors de la suppression de la bouteille.");
+        }
     }
 };
 __decorate([

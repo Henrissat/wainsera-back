@@ -22,15 +22,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -56,12 +47,12 @@ const corsConfig = {
     origin: ["http://localhost:3000"],
     credentials: true,
 };
-const start = () => __awaiter(void 0, void 0, void 0, function* () {
+const start = async () => {
     const app = (0, express_1.default)();
     app.use((0, cors_1.default)(corsConfig));
     const httpServer = http_1.default.createServer(app);
     const port = process.env.PORT || 8000;
-    const schema = yield (0, type_graphql_1.buildSchema)({
+    const schema = await (0, type_graphql_1.buildSchema)({
         resolvers: [bouteille_resolver_1.default, vin_resolvers_1.default, region_resolver_1.default, cepage_resolver_1.default, casier_resolver_1.default, user_resolver_1.default],
         validate: false,
     });
@@ -75,16 +66,16 @@ const start = () => __awaiter(void 0, void 0, void 0, function* () {
             (0, apollo_server_core_2.ApolloServerPluginLandingPageLocalDefault)({ embed: true }),
             (0, apollo_server_core_1.ApolloServerPluginDrainHttpServer)({ httpServer }),
         ],
-        context: ({ req }) => __awaiter(void 0, void 0, void 0, function* () {
+        context: async ({ req }) => {
             const { authorization } = req.headers;
-            let userLogged = yield (0, utilities_1.getUserFromToken)(authorization);
+            let userLogged = await (0, utilities_1.getUserFromToken)(authorization);
             return { userLogged };
-        }),
+        },
     });
-    yield server.start();
+    await server.start();
     server.applyMiddleware({ app, cors: false });
-    yield new Promise((resolve) => httpServer.listen({ port }, resolve));
+    await new Promise((resolve) => httpServer.listen({ port }, resolve));
     console.log(`🚀 Serveur prêt à l'adresse http://localhost:${port}${server.graphqlPath}`);
-    yield datasource_1.default.initialize();
-});
+    await datasource_1.default.initialize();
+};
 start();

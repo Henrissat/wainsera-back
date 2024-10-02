@@ -11,15 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -31,16 +22,14 @@ let VinResolver = class VinResolver {
     constructor() {
         this.vinService = new vin_service_1.default();
     }
-    vins() {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.vinService.listVins();
-            }
-            catch (error) {
-                console.error("Error in vins query:", error);
-                throw new Error("Une erreur s'est produite lors de la récupération des vins.");
-            }
-        });
+    async vins() {
+        try {
+            return await this.vinService.listVins();
+        }
+        catch (error) {
+            console.error("Error in vins query:", error);
+            throw new Error("Une erreur s'est produite lors de la récupération des vins.");
+        }
     }
     //   @Query(() => Vin, { nullable: true })
     //   async getVinById(@Arg("id") id: number): Promise<Vin | null> {
@@ -51,51 +40,43 @@ let VinResolver = class VinResolver {
     //       throw new Error("Une erreur s'est produite lors de la récupération du vin.");
     //     }
     //   }
-    getVinByColor(couleur) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.vinService.getVinByColor(couleur);
-            }
-            catch (error) {
-                console.error(`Error retrieving vins for couleur '${couleur}':`, error);
-                throw new Error("Une erreur s'est produite lors de la récupération des vins par couleur.");
-            }
-        });
+    async getVinByColor(couleur) {
+        try {
+            return await this.vinService.getVinByColor(couleur);
+        }
+        catch (error) {
+            console.error(`Error retrieving vins for couleur '${couleur}':`, error);
+            throw new Error("Une erreur s'est produite lors de la récupération des vins par couleur.");
+        }
     }
-    addVin(couleur) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.vinService.addVin({ couleur });
-            }
-            catch (error) {
-                console.error("Error in addVin mutation:", error);
-                throw new Error("Une erreur s'est produite lors de l'ajout d'un vin'.");
-            }
-        });
+    async addVin(couleur) {
+        try {
+            return await this.vinService.addVin({ couleur });
+        }
+        catch (error) {
+            console.error("Error in addVin mutation:", error);
+            throw new Error("Une erreur s'est produite lors de l'ajout d'un vin'.");
+        }
     }
-    updateVin(id, couleur) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                return yield this.vinService.updateVin(id, { id, couleur });
-            }
-            catch (error) {
-                console.error("Error in updateVin mutation:", error);
-                throw new Error("Une erreur s'est produite lors de la mise à jour d'un vin.");
-            }
-        });
+    async updateVin(id, couleur) {
+        try {
+            return await this.vinService.updateVin(id, { id, couleur });
+        }
+        catch (error) {
+            console.error("Error in updateVin mutation:", error);
+            throw new Error("Une erreur s'est produite lors de la mise à jour d'un vin.");
+        }
     }
-    deleteVin(id) {
-        return __awaiter(this, void 0, void 0, function* () {
-            console.log('Resolver: Deleting vin with ID:', id);
-            try {
-                const success = yield this.vinService.deleteVin(id);
-                return success;
-            }
-            catch (error) {
-                console.error("Error in deleteVin mutation:", error);
-                throw new Error("Une erreur s'est produite lors de la suppression du vin.");
-            }
-        });
+    async deleteVin(id) {
+        console.log('Resolver: Deleting vin with ID:', id);
+        try {
+            const success = await this.vinService.deleteVin(id);
+            return success;
+        }
+        catch (error) {
+            console.error("Error in deleteVin mutation:", error);
+            throw new Error("Une erreur s'est produite lors de la suppression du vin.");
+        }
     }
 };
 __decorate([

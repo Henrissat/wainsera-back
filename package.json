@@ -1,12 +1,12 @@
 {
   "name": "server-wainsera",
   "version": "1.0.0",
-  "main": "index.ts",
-  "type": "module",
+  "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "start": "ts-node src/index.ts",
-    "dev": "ts-node-dev --exit-child --watch src --poll src/index.ts"
+    "start": "node dist/index.js",
+    "dev": "ts-node-dev --exit-child --watch src --poll src/index.ts",
+    "postinstall": "npm run build"
   },
   "license": "MIT",
   "dependencies": {
