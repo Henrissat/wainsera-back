@@ -18,7 +18,6 @@ import CepageResolver from './resolvers/cepage.resolver';
 import CasierResolver from './resolvers/casier.resolver';
 import UserResolver from './resolvers/user.resolver';
 
-
 const corsConfig = {
   origin: ["http://localhost:3000"], 
   credentials: true, 

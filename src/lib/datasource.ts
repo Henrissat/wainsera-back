@@ -16,12 +16,15 @@ import { User } from "../entities/user.entity";
 let databaseConfig: any;
 
 databaseConfig = {
-  type: "mysql",
-  url: process.env.DATABASE_URL,
-  port: 3306, 
-  synchronize: true, 
-  logging: ["query", "error"],
-  entities: [
+    type: "mysql",
+    host: process.env.MYSQLHOST,
+    port: Number(process.env.MYSQLPORT),
+    username: process.env.MYSQLUSER,
+    password: process.env.MYSQLPASSWORD,
+    database: process.env.MYSQLDATABASE,
+    synchronize: true, 
+    logging: ["query", "error"],
+    entities: [
     Bouteille, User, Cuvee, Vin, Appellation, Avis, TypeVin, Casier, Region, Pays, BouteilleCepage, Cepage
   ],
 };
