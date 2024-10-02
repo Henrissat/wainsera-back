@@ -19,7 +19,7 @@ import CasierResolver from './resolvers/casier.resolver';
 import UserResolver from './resolvers/user.resolver';
 
 const corsConfig = {
-  origin: ["https://wainsera.netlify.app/"],
+  origin: ["https://wainsera.netlify.app", "https://wainsera.netlify.app/"],
   credentials: true, 
 };
 
@@ -53,7 +53,10 @@ const start = async () => {
   });
 
   await server.start();
-  server.applyMiddleware({ app, cors: false }); 
+  server.applyMiddleware({
+    app,
+    cors: corsConfig,
+  });
 
   await new Promise<void>((resolve) => httpServer.listen({ port }, resolve));
   console.log(`🚀 Serveur prêt à l'adresse http://localhost:${port}${server.graphqlPath}`);

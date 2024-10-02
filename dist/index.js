@@ -44,7 +44,7 @@ const cepage_resolver_1 = __importDefault(require("./resolvers/cepage.resolver")
 const casier_resolver_1 = __importDefault(require("./resolvers/casier.resolver"));
 const user_resolver_1 = __importDefault(require("./resolvers/user.resolver"));
 const corsConfig = {
-    origin: ["https://wainsera.netlify.app/"],
+    origin: ["https://wainsera.netlify.app", "https://wainsera.netlify.app/"],
     credentials: true,
 };
 const start = async () => {
@@ -73,7 +73,10 @@ const start = async () => {
         },
     });
     await server.start();
-    server.applyMiddleware({ app, cors: false });
+    server.applyMiddleware({
+        app,
+        cors: corsConfig,
+    });
     await new Promise((resolve) => httpServer.listen({ port }, resolve));
     console.log(`🚀 Serveur prêt à l'adresse http://localhost:${port}${server.graphqlPath}`);
     await datasource_1.default.initialize();
