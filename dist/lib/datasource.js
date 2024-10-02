@@ -16,12 +16,16 @@ const user_entity_1 = require("../entities/user.entity");
 let databaseConfig;
 databaseConfig = {
     type: "mysql",
-    url: process.env.DATABASE_URL,
-    port: 3306,
+    host: process.env.MYSQLHOST,
+    port: Number(process.env.MYSQLPORT),
+    username: process.env.MYSQLUSER,
+    password: process.env.MYSQLPASSWORD,
+    database: process.env.MYSQLDATABASE,
     synchronize: true,
     logging: ["query", "error"],
     entities: [
         bouteille_entity_1.Bouteille, user_entity_1.User, cuvee_entity_1.Cuvee, vin_entity_1.Vin, appellation_entity_1.Appellation, avis_entity_1.Avis, typeVin_entity_1.TypeVin, casier_entity_1.Casier, region_entity_1.Region, pays_entity_1.Pays, bouteilleCepage_entity_1.BouteilleCepage, cepage_entity_1.Cepage
     ],
+    driver: require('mysql2')
 };
 exports.default = new typeorm_1.DataSource(databaseConfig);
