@@ -13,32 +13,15 @@ const pays_entity_1 = require("../entities/pays.entity");
 const cepage_entity_1 = require("../entities/cepage.entity");
 const bouteilleCepage_entity_1 = require("../entities/bouteilleCepage.entity");
 const user_entity_1 = require("../entities/user.entity");
-const isProduction = process.env.NODE_ENV === 'production';
 let databaseConfig;
-if (isProduction) {
-    databaseConfig = {
-        type: "mysql",
-        host: process.env.DB_HOST,
-        port: 3306,
-        username: process.env.DB_USER,
-        password: process.env.DB_PASS,
-        database: process.env.DB_NAME,
-        synchronize: true,
-        logging: ["query", "error"],
-        entities: [
-            bouteille_entity_1.Bouteille, user_entity_1.User, cuvee_entity_1.Cuvee, vin_entity_1.Vin, appellation_entity_1.Appellation, avis_entity_1.Avis, typeVin_entity_1.TypeVin, casier_entity_1.Casier, region_entity_1.Region, pays_entity_1.Pays, bouteilleCepage_entity_1.BouteilleCepage, cepage_entity_1.Cepage
-        ],
-    };
-}
-else {
-    databaseConfig = {
-        type: "sqlite",
-        database: "./wainsera.sqlite",
-        synchronize: true,
-        logging: ["query", "error"],
-        entities: [
-            bouteille_entity_1.Bouteille, user_entity_1.User, cuvee_entity_1.Cuvee, vin_entity_1.Vin, appellation_entity_1.Appellation, avis_entity_1.Avis, typeVin_entity_1.TypeVin, casier_entity_1.Casier, region_entity_1.Region, pays_entity_1.Pays, bouteilleCepage_entity_1.BouteilleCepage, cepage_entity_1.Cepage
-        ],
-    };
-}
+databaseConfig = {
+    type: "mysql",
+    url: process.env.DATABASE_URL,
+    port: 3306,
+    synchronize: true,
+    logging: ["query", "error"],
+    entities: [
+        bouteille_entity_1.Bouteille, user_entity_1.User, cuvee_entity_1.Cuvee, vin_entity_1.Vin, appellation_entity_1.Appellation, avis_entity_1.Avis, typeVin_entity_1.TypeVin, casier_entity_1.Casier, region_entity_1.Region, pays_entity_1.Pays, bouteilleCepage_entity_1.BouteilleCepage, cepage_entity_1.Cepage
+    ],
+};
 exports.default = new typeorm_1.DataSource(databaseConfig);
