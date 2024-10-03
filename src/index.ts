@@ -19,7 +19,7 @@ import CasierResolver from './resolvers/casier.resolver';
 import UserResolver from './resolvers/user.resolver';
 
 const corsConfig = {
-  origin: ["https://wainsera.netlify.app", "https://wainsera.netlify.app/"],
+  origin: ["https://wainsera.netlify.app", "https://wainsera.netlify.app/, http://localhost:3000"],
   credentials: true, 
 };
 
