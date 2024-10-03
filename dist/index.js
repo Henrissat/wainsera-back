@@ -44,7 +44,7 @@ const cepage_resolver_1 = __importDefault(require("./resolvers/cepage.resolver")
 const casier_resolver_1 = __importDefault(require("./resolvers/casier.resolver"));
 const user_resolver_1 = __importDefault(require("./resolvers/user.resolver"));
 const corsConfig = {
-    origin: ["https://wainsera.netlify.app", "https://wainsera.netlify.app/, http://localhost:3000"],
+    origin: ["https://wainsera.netlify.app", "https://wainsera.netlify.app/, http://localhost:3000, http://localhost:3000/"],
     credentials: true,
 };
 const start = async () => {
