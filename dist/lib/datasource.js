@@ -24,7 +24,7 @@ databaseConfig = {
     synchronize: true,
     logging: ["query", "error"],
     entities: [
-        bouteille_entity_1.Bouteille, user_entity_1.User, cuvee_entity_1.Cuvee, vin_entity_1.Vin, appellation_entity_1.Appellation, avis_entity_1.Avis, typeVin_entity_1.TypeVin, casier_entity_1.Casier, region_entity_1.Region, pays_entity_1.Pays, bouteilleCepage_entity_1.BouteilleCepage, cepage_entity_1.Cepage
+        bouteille_entity_1.Bouteille, user_entity_1.User, cuvee_entity_1.Cuvee, vin_entity_1.Vin, appellation_entity_1.Appellation, avis_entity_1.Avis, typeVin_entity_1.TypeVin, casier_entity_1.Casier, region_entity_1.Region, pays_entity_1.Pays, bouteilleCepage_entity_1.BouteilleCepage, cepage_entity_1.Cepage, appellation_entity_1.Appellation
     ],
     driver: require('mysql2')
 };

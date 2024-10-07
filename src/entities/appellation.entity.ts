@@ -1,7 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, ManyToOne, JoinColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable, ManyToOne, JoinColumn, OneToMany } from "typeorm";
 import { ObjectType, Field, ID } from "type-graphql";
 import { Vin } from "./vin.entity";
 import { Region } from "./region.entity";
+import { Bouteille } from "./bouteille.entity";
 
 @ObjectType()
 @Entity()
@@ -23,4 +24,9 @@ export class Appellation {
   @ManyToOne(() => Region, region => region.appellations, { nullable: true })
   @JoinColumn()
   region: Region;
+
+  @Field(() => Bouteille, { nullable: true })
+  @OneToMany(() => Bouteille, bouteille => bouteille.appellation, { nullable: true })
+  @JoinColumn()
+  bouteilles: Bouteille;
 }

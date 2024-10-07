@@ -59,6 +59,10 @@ __decorate([
     __metadata("design:type", Number)
 ], IAddBouteille.prototype, "regionId", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Int, { nullable: true }),
+    __metadata("design:type", Number)
+], IAddBouteille.prototype, "appellationId", void 0);
+__decorate([
     (0, type_graphql_1.Field)({ nullable: true }),
     __metadata("design:type", String)
 ], IAddBouteille.prototype, "cuveeNom", void 0);
@@ -70,6 +74,10 @@ __decorate([
     (0, type_graphql_1.Field)(() => String, { nullable: true }),
     __metadata("design:type", String)
 ], IAddBouteille.prototype, "userId", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => String, { nullable: true }),
+    __metadata("design:type", String)
+], IAddBouteille.prototype, "picture", void 0);
 exports.IAddBouteille = IAddBouteille = __decorate([
     (0, type_graphql_1.InputType)()
 ], IAddBouteille);
@@ -125,6 +133,10 @@ __decorate([
     __metadata("design:type", Number)
 ], IUpdateBouteille.prototype, "regionId", void 0);
 __decorate([
+    (0, type_graphql_1.Field)(() => type_graphql_1.Int, { nullable: true }),
+    __metadata("design:type", Number)
+], IUpdateBouteille.prototype, "appellationId", void 0);
+__decorate([
     (0, type_graphql_1.Field)({ nullable: true }),
     __metadata("design:type", String)
 ], IUpdateBouteille.prototype, "cuveeNom", void 0);
@@ -136,6 +148,10 @@ __decorate([
     (0, type_graphql_1.Field)(() => String, { nullable: true }),
     __metadata("design:type", String)
 ], IUpdateBouteille.prototype, "userId", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => String, { nullable: true }),
+    __metadata("design:type", String)
+], IUpdateBouteille.prototype, "picture", void 0);
 exports.IUpdateBouteille = IUpdateBouteille = __decorate([
     (0, type_graphql_1.InputType)()
 ], IUpdateBouteille);

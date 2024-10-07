@@ -35,6 +35,9 @@ export class IAddBouteille {
   @Field(() => Int, { nullable: true })
   regionId?: number;
 
+  @Field(() => Int, { nullable: true })
+  appellationId?: number;
+
   @Field({ nullable: true })
   cuveeNom?: string;
 
@@ -43,6 +46,9 @@ export class IAddBouteille {
 
   @Field(() => String, { nullable: true })
   userId?: string;
+
+  @Field(() => String, { nullable: true })
+  picture?: string; 
 }
 
 @InputType()
@@ -83,6 +89,9 @@ export class IUpdateBouteille {
   @Field(() => Int, { nullable: true })
   regionId?: number;
 
+  @Field(() => Int, { nullable: true })
+  appellationId?: number;
+
   @Field({ nullable: true })
   cuveeNom?: string;
 
@@ -91,4 +100,7 @@ export class IUpdateBouteille {
 
   @Field(() => String, { nullable: true })
   userId?: string;
+
+  @Field(() => String, { nullable: true })
+  picture?: string; 
 }

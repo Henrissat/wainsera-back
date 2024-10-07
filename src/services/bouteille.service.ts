@@ -9,6 +9,7 @@ import { Region } from "../entities/region.entity";
 import { Casier } from "../entities/casier.entity";
 import { IUpdateCasier } from "../resolvers/casier";
 import { User } from "../entities/user.entity";
+import { Appellation } from "../entities/appellation.entity";
 
 export default class BouteilleService {
   private db: Repository<Bouteille>;
@@ -18,6 +19,7 @@ export default class BouteilleService {
   private regionRepository: Repository<Region>;
   private casierRepository: Repository<Casier>;
   private userRepository: Repository<User>;
+  private appellationRepository: Repository<Appellation>;
 
   constructor() {
     this.db = datasource.getRepository(Bouteille);
@@ -27,12 +29,13 @@ export default class BouteilleService {
     this.regionRepository = datasource.getRepository(Region);
     this.casierRepository = datasource.getRepository(Casier);
     this.userRepository = datasource.getRepository(User);
+    this.appellationRepository = datasource.getRepository(Appellation);
   }
 
   async listBouteilles(): Promise<Bouteille[]> {
     try {
       const bouteilles = await this.db.find({
-        relations: ["cuvee", "vin", "cepages", "region", "region.pays", "casier"],
+        relations: ["cuvee", "vin", "cepages", "region", "region.pays", "casier", "appellation"],
       });
       console.log(bouteilles); 
       return bouteilles;
@@ -73,7 +76,7 @@ export default class BouteilleService {
 
   async addBouteille(bouteilleInput: IAddBouteille): Promise<Bouteille> {
     try {
-      const { millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, vinId, casierId, cepageIds, cuveeNom, regionId, userId } = bouteilleInput;
+      const { millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, picture, vinId, casierId, cepageIds, cuveeNom, regionId, userId, appellationId } = bouteilleInput;
   
       const vin = await this.vinRepository.findOne({ where: { id: vinId } });
       if (!vin) {
@@ -109,6 +112,11 @@ export default class BouteilleService {
       if (!user) {
         throw new Error("Utilisateur non trouvé");
       }
+
+      const appellation = await this.appellationRepository.findOne({ where: { id: appellationId } });
+      if (!appellation) {
+        throw new Error("Appellation non trouvée");
+      }
   
       const newBouteille = this.db.create({
         millesime,
@@ -121,6 +129,8 @@ export default class BouteilleService {
         accord,
         vin,
         cepages,
+        appellation,
+        picture,
         ...(cuvee && { cuvee }),
         region,
         casier,
@@ -136,7 +146,7 @@ export default class BouteilleService {
 
   async updateBouteille(bouteilleInput: IUpdateBouteille): Promise<Bouteille> {
     try {
-      const { id, millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, vinId, casierId, cepageIds, cuveeNom, regionId, userId } = bouteilleInput;
+      const { id, millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, picture, vinId, casierId, cepageIds, cuveeNom, regionId, userId, appellationId } = bouteilleInput;
 
       // Trouver la bouteille existante
       const existingBouteille = await this.db.findOne({ where: { id } });
@@ -153,6 +163,7 @@ export default class BouteilleService {
       if (note_perso !== undefined) existingBouteille.note_perso = note_perso;
       if (bouche !== undefined) existingBouteille.bouche = bouche;
       if (accord !== undefined) existingBouteille.accord = accord;
+      if (picture !== undefined) existingBouteille.picture = picture;
 
       if (vinId !== undefined) {
         const vin = await this.vinRepository.findOne({ where: { id: vinId } });
@@ -204,6 +215,12 @@ export default class BouteilleService {
         const user = await this.userRepository.findOne({ where: { id: userId } });
         if (!user) throw new Error("Utilisateur non trouvé");
         existingBouteille.user = user;
+      }
+
+      if(appellationId !== undefined) {
+        const appellation = await this.appellationRepository.findOne({ where: { id: appellationId } });
+        if (!appellation) throw new Error("Appellation non trouvée");
+        existingBouteille.appellation = appellation;
       }
 
       // if (casierId) {

@@ -8,6 +8,7 @@ import { Cepage } from "./cepage.entity";
 import { BouteilleCepage } from "./bouteilleCepage.entity";
 import { Region } from "./region.entity";
 import { User } from "./user.entity";
+import { Appellation } from "./appellation.entity";
 
 @ObjectType()
 @Entity()
@@ -45,6 +46,10 @@ export class Bouteille {
   accord: string;
 
   @Field({ nullable: true })
+  @Column({ type: "text", nullable: true })
+  picture: string;
+
+  @Field({ nullable: true })
   @Column({ type: "int", nullable: true })
   garde_apogee: number;
 
@@ -57,6 +62,11 @@ export class Bouteille {
   @ManyToOne(() => Vin, vin => vin.bouteilles, { nullable: true, eager: true })
   @JoinColumn({ name: "vinId" })
   vin: Vin;
+
+  @Field(() => Appellation, { nullable: true })
+  @ManyToOne(() => Appellation, appellation => appellation.bouteilles, { nullable: true, eager: true })
+  @JoinColumn({ name: "appellationId" })
+  appellation: Appellation;
   
   @Field(() => [Cepage], { nullable: true })
   @ManyToMany(() => Cepage, cepage => cepage.bouteilles)

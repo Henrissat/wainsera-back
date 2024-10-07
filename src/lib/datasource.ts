@@ -25,7 +25,7 @@ databaseConfig = {
     synchronize: true, 
     logging: ["query", "error"],
     entities: [
-    Bouteille, User, Cuvee, Vin, Appellation, Avis, TypeVin, Casier, Region, Pays, BouteilleCepage, Cepage
+    Bouteille, User, Cuvee, Vin, Appellation, Avis, TypeVin, Casier, Region, Pays, BouteilleCepage, Cepage, Appellation
   ],
   driver: require('mysql2')
 };

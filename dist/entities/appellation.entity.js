@@ -14,6 +14,7 @@ const typeorm_1 = require("typeorm");
 const type_graphql_1 = require("type-graphql");
 const vin_entity_1 = require("./vin.entity");
 const region_entity_1 = require("./region.entity");
+const bouteille_entity_1 = require("./bouteille.entity");
 let Appellation = class Appellation {
 };
 exports.Appellation = Appellation;
@@ -39,6 +40,12 @@ __decorate([
     (0, typeorm_1.JoinColumn)(),
     __metadata("design:type", region_entity_1.Region)
 ], Appellation.prototype, "region", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => bouteille_entity_1.Bouteille, { nullable: true }),
+    (0, typeorm_1.OneToMany)(() => bouteille_entity_1.Bouteille, bouteille => bouteille.appellation, { nullable: true }),
+    (0, typeorm_1.JoinColumn)(),
+    __metadata("design:type", bouteille_entity_1.Bouteille)
+], Appellation.prototype, "bouteilles", void 0);
 exports.Appellation = Appellation = __decorate([
     (0, type_graphql_1.ObjectType)(),
     (0, typeorm_1.Entity)()

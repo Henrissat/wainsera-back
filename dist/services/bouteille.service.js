@@ -12,6 +12,7 @@ const cepage_entity_1 = require("../entities/cepage.entity");
 const region_entity_1 = require("../entities/region.entity");
 const casier_entity_1 = require("../entities/casier.entity");
 const user_entity_1 = require("../entities/user.entity");
+const appellation_entity_1 = require("../entities/appellation.entity");
 class BouteilleService {
     constructor() {
         this.db = datasource_1.default.getRepository(bouteille_entity_1.Bouteille);
@@ -21,11 +22,12 @@ class BouteilleService {
         this.regionRepository = datasource_1.default.getRepository(region_entity_1.Region);
         this.casierRepository = datasource_1.default.getRepository(casier_entity_1.Casier);
         this.userRepository = datasource_1.default.getRepository(user_entity_1.User);
+        this.appellationRepository = datasource_1.default.getRepository(appellation_entity_1.Appellation);
     }
     async listBouteilles() {
         try {
             const bouteilles = await this.db.find({
-                relations: ["cuvee", "vin", "cepages", "region", "region.pays", "casier"],
+                relations: ["cuvee", "vin", "cepages", "region", "region.pays", "casier", "appellation"],
             });
             console.log(bouteilles);
             return bouteilles;
@@ -64,7 +66,7 @@ class BouteilleService {
     }
     async addBouteille(bouteilleInput) {
         try {
-            const { millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, vinId, casierId, cepageIds, cuveeNom, regionId, userId } = bouteilleInput;
+            const { millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, picture, vinId, casierId, cepageIds, cuveeNom, regionId, userId, appellationId } = bouteilleInput;
             const vin = await this.vinRepository.findOne({ where: { id: vinId } });
             if (!vin) {
                 throw new Error("Vin non trouvé");
@@ -93,6 +95,10 @@ class BouteilleService {
             if (!user) {
                 throw new Error("Utilisateur non trouvé");
             }
+            const appellation = await this.appellationRepository.findOne({ where: { id: appellationId } });
+            if (!appellation) {
+                throw new Error("Appellation non trouvée");
+            }
             const newBouteille = this.db.create(Object.assign(Object.assign({ millesime,
                 garde_apogee,
                 alcool,
@@ -102,7 +108,9 @@ class BouteilleService {
                 bouche,
                 accord,
                 vin,
-                cepages }, (cuvee && { cuvee })), { region,
+                cepages,
+                appellation,
+                picture }, (cuvee && { cuvee })), { region,
                 casier,
                 user }));
             return await this.db.save(newBouteille);
@@ -114,7 +122,7 @@ class BouteilleService {
     }
     async updateBouteille(bouteilleInput) {
         try {
-            const { id, millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, vinId, casierId, cepageIds, cuveeNom, regionId, userId } = bouteilleInput;
+            const { id, millesime, garde_apogee, alcool, quantite, note, note_perso, bouche, accord, picture, vinId, casierId, cepageIds, cuveeNom, regionId, userId, appellationId } = bouteilleInput;
             // Trouver la bouteille existante
             const existingBouteille = await this.db.findOne({ where: { id } });
             if (!existingBouteille) {
@@ -137,6 +145,8 @@ class BouteilleService {
                 existingBouteille.bouche = bouche;
             if (accord !== undefined)
                 existingBouteille.accord = accord;
+            if (picture !== undefined)
+                existingBouteille.picture = picture;
             if (vinId !== undefined) {
                 const vin = await this.vinRepository.findOne({ where: { id: vinId } });
                 if (!vin) {
@@ -183,6 +193,12 @@ class BouteilleService {
                 if (!user)
                     throw new Error("Utilisateur non trouvé");
                 existingBouteille.user = user;
+            }
+            if (appellationId !== undefined) {
+                const appellation = await this.appellationRepository.findOne({ where: { id: appellationId } });
+                if (!appellation)
+                    throw new Error("Appellation non trouvée");
+                existingBouteille.appellation = appellation;
             }
             // if (casierId) {
             //   let casier = await this.casierRepository.findOne({ where: { id: casierId } });

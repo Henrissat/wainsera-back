@@ -20,6 +20,7 @@ const cepage_entity_1 = require("./cepage.entity");
 const bouteilleCepage_entity_1 = require("./bouteilleCepage.entity");
 const region_entity_1 = require("./region.entity");
 const user_entity_1 = require("./user.entity");
+const appellation_entity_1 = require("./appellation.entity");
 let Bouteille = class Bouteille {
 };
 exports.Bouteille = Bouteille;
@@ -65,6 +66,11 @@ __decorate([
 ], Bouteille.prototype, "accord", void 0);
 __decorate([
     (0, type_graphql_1.Field)({ nullable: true }),
+    (0, typeorm_1.Column)({ type: "text", nullable: true }),
+    __metadata("design:type", String)
+], Bouteille.prototype, "picture", void 0);
+__decorate([
+    (0, type_graphql_1.Field)({ nullable: true }),
     (0, typeorm_1.Column)({ type: "int", nullable: true }),
     __metadata("design:type", Number)
 ], Bouteille.prototype, "garde_apogee", void 0);
@@ -80,6 +86,12 @@ __decorate([
     (0, typeorm_1.JoinColumn)({ name: "vinId" }),
     __metadata("design:type", vin_entity_1.Vin)
 ], Bouteille.prototype, "vin", void 0);
+__decorate([
+    (0, type_graphql_1.Field)(() => appellation_entity_1.Appellation, { nullable: true }),
+    (0, typeorm_1.ManyToOne)(() => appellation_entity_1.Appellation, appellation => appellation.bouteilles, { nullable: true, eager: true }),
+    (0, typeorm_1.JoinColumn)({ name: "appellationId" }),
+    __metadata("design:type", appellation_entity_1.Appellation)
+], Bouteille.prototype, "appellation", void 0);
 __decorate([
     (0, type_graphql_1.Field)(() => [cepage_entity_1.Cepage], { nullable: true }),
     (0, typeorm_1.ManyToMany)(() => cepage_entity_1.Cepage, cepage => cepage.bouteilles),
